@@ -1,0 +1,599 @@
+/* Introduction to MongoDB Aggregation  */
+
+/* Aggregation Method Syntax and Use */
+
+db.collection.aggregate(<AGGREGATE OPERATION>)
+
+/* Examples and use of Aggregation Method */
+
+/* Code 1 */
+ 
+var BPBBooksBestSellingEditionsAggregation = [{
+    'Title': 'Cloud Computing',
+    'Year': '2019',
+    'ISBN': '9789388511407',
+    'Pages': 330,
+    'Weight': '570gm',
+    'Dimension': '23x19x1.5cm',
+    'Tags': ['Cloud Computing', 'Cloud Computing Concepts', 'Non Programming'],
+    'InStock': [{
+            'Type': 'Paperback',
+            'Quantity': 3000
+        },
+        {
+            'Type': 'Hardcover',
+            'Quantity': 1500
+        }
+    ],
+    'SpecialOfferDiscount': '100'
+}, {
+    'Title': 'Introduction to Digital Marketing 101 : Easy to Learn and Implement Hands-on Guide for Digital Marketing',
+    'Year': '2019',
+    'ISBN': '9789389328189',
+    'Pages': 464,
+    'Tags': ['Digital Marketing', 'Digital Marketing Tips', 'Non Programming'],
+    'InStock': [{
+            'Type': 'Paperback',
+            'Quantity': 4000
+        },
+        {
+            'Type': 'Hardcover',
+            'Quantity': 2300
+        }
+    ]
+}, {
+    'Title': 'IOT and Smart Cities: Your Smart City Planning Guide',
+    'Year': '2019',
+    'ISBN': '9789388511322',
+    'Pages': 242,
+    'Weight': '357gm',
+    'Dimension': '22.5x15x1.5gm',
+    'Tags': ['Internet of Things', 'IoT', 'Smart City', 'Planning Guide', 'Non Programming'],
+    'InStock': [{
+            'Type': 'Paperback',
+            'Quantity': 2000
+        },
+        {
+            'Type': 'Hardcover',
+            'Quantity': 1000
+        }
+    ] ,
+    'SpecialOfferDiscount': '200'
+}, {
+    'Title': 'Machine Learning with Python',
+    'Year': '2018',
+    'ISBN': '9789386551931',
+    'Pages': 267,
+    'Tags': ['Python', 'Machine Learning', 'Python Programming', 'Programming'],
+    'InStock': [{
+            'Type': 'Paperback',
+            'Quantity': 4500
+        },
+        {
+            'Type': 'Hardcover',
+            'Quantity': 1300
+        }
+    ]
+},{
+    'Title': 'Programming In Python',
+    'Year': '2018',
+    'ISBN': '9789386551276',
+    'Pages': 267,
+    'Tags': ['Python', 'Machine Learning', 'Python Programming', 'Programming'],
+    'InStock': [{
+            'Type': 'Paperback',
+            'Quantity': 4000
+        },
+        {
+            'Type': 'Hardcover',
+            'Quantity': 1500
+        }
+    ]
+},  {
+    'Title': 'Artificial Intelligence Ethics and International Law: An Introduction',
+    'Year': '2019',
+    'ISBN': ' 9789388511629',
+    'Pages': 188,
+    'Weight': '268gm',
+    'Tags': ['Artificial Intelligence', 'International Law', 'AI', 'Artificial Intelligence Ethics', 'Non Programming'],
+    'InStock': [{
+            'Type': 'Paperback',
+            'Quantity': 5200
+        },
+        {
+            'Type': 'Hardcover',
+            'Quantity': 3300
+        }
+    ]
+}, {
+    'Title': 'A Practical Approach for Machine Learning and Deep Learning Algorithms',
+    'Year': '2019',
+    'ISBN': '9789388511131',
+    'Pages': 280,
+    'Weight': '424gm',
+    'Tags': ['Machine Learning', 'Deep Learning', 'Algorithms', 'Programming'],
+    'InStock': [{
+            'Type': 'Paperback',
+            'Quantity': 2800
+        },
+        {
+            'Type': 'Hardcover',
+            'Quantity': 1250
+        }
+    ] ,
+    'SpecialOfferDiscount': '150'
+}, {
+    '_id': '20021111',
+    'Title': 'Introduction to Database Management',
+    'Year': '2002',
+    'ISBN': ' 9788176566384',
+    'Pages': 342,
+    'Tags': ['Database Management', 'DBMS', 'Programming'],
+    'InStock': [{
+            'Type': 'Paperback',
+            'Quantity': 4000
+        },
+        {
+            'Type': 'Hardcover',
+            'Quantity': 3450
+        }
+    ]
+}];
+
+/* Code 2 */
+
+db.BPBOnlineBooksCollectionAggregation.insert(BPBBooksBestSellingEditionsAggregation);
+
+
+/* Examples of Aggregation */
+
+/* The MongoDB $group Operator */
+
+/* Example 1 - $sum Aggregation Expression Type */
+
+/* Code 1 */
+
+db.BPBOnlineBooksCollectionAggregation.aggregate([{
+    $group: {
+        _id: "$Year",
+        "Number of Published Books": {
+            $sum: 1
+        }
+    }
+}]);
+
+/* Example 2 - $sum Aggregation Expression Type with Operation in Group Output */
+
+/* Code 1 */
+
+db.BPBOnlineBooksCollectionAggregation.aggregate([{
+    $group: {
+        _id: "$Year",
+        "Number of Published Books Multiplied by 10": {
+            $sum: 1*10
+        }
+    }
+}]);
+
+/* Example 3 - $sum Aggregation Expression Type with Some Other Field */
+
+/* Code 1 */
+
+db.BPBOnlineBooksCollectionAggregation.aggregate([{
+    $group: {
+        _id: "$Year",
+        "Total Number of Pages Published in all the Books": {
+            $sum: "$Pages"
+        }
+    }
+}]);
+
+/* Example 4 - $avg Aggregation Expression Type */
+
+/* Code 1 */
+
+db.BPBOnlineBooksCollectionAggregation.aggregate([{
+    $group: {
+        _id: "$Year",
+        "Average Number of Pages Published in all the Books": {
+            $sum: "$Pages"
+        }
+    }
+}]);
+
+/* Example 5 - $max Aggregation Expression Type */
+
+/* Code 1 */
+
+db.BPBOnlineBooksCollectionAggregation.aggregate([{
+    $group: {
+        _id: "$Year",
+        "Maximum Pages Published in a Book": {
+            $max: "$Pages"
+        }
+    }
+}]);
+
+/* Example 6 - $push Aggregation Expression Type */
+
+/* Code 1 */
+
+db.BPBOnlineBooksCollectionAggregation.aggregate([{
+    $group: {
+        _id: "$Year",
+        "All the Tags used in the Books": {
+            $push: "$Tags"
+        }
+    }
+}]).pretty();
+
+/* Example 7 - $last Aggregation Expression Type */
+
+/* Code 1 */
+
+db.BPBOnlineBooksCollectionAggregation.aggregate([{
+    $group: {
+        _id: "$Year",
+        "Latest Title the Books Published": {
+            $last: "$Title"
+        }
+    }
+}]);
+
+/* Introduction to Map-Reduce */
+
+/* The mapReduce() Method */
+
+db.collection.mapReduce(
+    function() {
+        emit(key, value);
+    }, /* Map : Function to Map */
+    function(key, values) {
+        return reduceFunctionResult
+    }, {
+        /* Reduce : Function to Reduce */
+        out: < collection or screen > ,
+        query: < document > ,
+        sort: < document > ,
+        limit: < number >
+    }
+);
+
+/* How Map Reduce Function Works? */
+
+/* Code 1 */
+ 
+var BPBBooksBestSellingEditionsMapReduce = [{
+    'Title': 'Cloud Computing',
+    'Year': '2019',
+    'ISBN': '9789388511407',
+    'Pages': 330,
+    'Weight': '570gm',
+    'Dimension': '23x19x1.5cm',
+    'Tags': ['Cloud Computing', 'Cloud Computing Concepts', 'Non Programming'],
+    'InStock': [{
+            'Type': 'Paperback',
+            'Quantity': 3000
+        },
+        {
+            'Type': 'Hardcover',
+            'Quantity': 1500
+        }
+    ],
+    'SpecialOfferDiscount': '100'
+}, {
+    'Title': 'Introduction to Digital Marketing 101 : Easy to Learn and Implement Hands-on Guide for Digital Marketing',
+    'Year': '2019',
+    'ISBN': '9789389328189',
+    'Pages': 464,
+    'Tags': ['Digital Marketing', 'Digital Marketing Tips', 'Non Programming'],
+    'InStock': [{
+            'Type': 'Paperback',
+            'Quantity': 4000
+        },
+        {
+            'Type': 'Hardcover',
+            'Quantity': 2300
+        }
+    ]
+}, {
+    'Title': 'IOT and Smart Cities: Your Smart City Planning Guide',
+    'Year': '2019',
+    'ISBN': '9789388511322',
+    'Pages': 242,
+    'Weight': '357gm',
+    'Dimension': '22.5x15x1.5gm',
+    'Tags': ['Internet of Things', 'IoT', 'Smart City', 'Planning Guide', 'Non Programming'],
+    'InStock': [{
+            'Type': 'Paperback',
+            'Quantity': 2000
+        },
+        {
+            'Type': 'Hardcover',
+            'Quantity': 1000
+        }
+    ] ,
+    'SpecialOfferDiscount': '200'
+}, {
+    'Title': 'Machine Learning with Python',
+    'Year': '2018',
+    'ISBN': '9789386551931',
+    'Pages': 267,
+    'Tags': ['Python', 'Machine Learning', 'Python Programming', 'Programming'],
+    'InStock': [{
+            'Type': 'Paperback',
+            'Quantity': 4500
+        },
+        {
+            'Type': 'Hardcover',
+            'Quantity': 1300
+        }
+    ]
+},{
+    'Title': 'Programming In Python',
+    'Year': '2018',
+    'ISBN': '9789386551276',
+    'Pages': 267,
+    'Tags': ['Python', 'Machine Learning', 'Python Programming', 'Programming'],
+    'InStock': [{
+            'Type': 'Paperback',
+            'Quantity': 4000
+        },
+        {
+            'Type': 'Hardcover',
+            'Quantity': 1500
+        }
+    ]
+},  {
+    'Title': 'Artificial Intelligence Ethics and International Law: An Introduction',
+    'Year': '2019',
+    'ISBN': ' 9789388511629',
+    'Pages': 188,
+    'Weight': '268gm',
+    'Tags': ['Artificial Intelligence', 'International Law', 'AI', 'Artificial Intelligence Ethics', 'Non Programming'],
+    'InStock': [{
+            'Type': 'Paperback',
+            'Quantity': 5200
+        },
+        {
+            'Type': 'Hardcover',
+            'Quantity': 3300
+        }
+    ]
+}, {
+    'Title': 'A Practical Approach for Machine Learning and Deep Learning Algorithms',
+    'Year': '2019',
+    'ISBN': '9789388511131',
+    'Pages': 280,
+    'Weight': '424gm',
+    'Tags': ['Machine Learning', 'Deep Learning', 'Algorithms', 'Programming'],
+    'InStock': [{
+            'Type': 'Paperback',
+            'Quantity': 2800
+        },
+        {
+            'Type': 'Hardcover',
+            'Quantity': 1250
+        }
+    ] ,
+    'SpecialOfferDiscount': '150'
+}, {
+    '_id': '20021111',
+    'Title': 'Introduction to Database Management',
+    'Year': '2002',
+    'ISBN': ' 9788176566384',
+    'Pages': 342,
+    'Tags': ['Database Management', 'DBMS', 'Programming'],
+    'InStock': [{
+            'Type': 'Paperback',
+            'Quantity': 4000
+        },
+        {
+            'Type': 'Hardcover',
+            'Quantity': 3450
+        }
+    ]
+}];
+
+
+/* Code 2 */
+
+db.BPBOnlineBooksCollectionMapReduce.insert(BPBBooksBestSellingEditionsMapReduce);
+
+
+/* Example 1 – mapReduce() */
+
+/* Code 1 */
+
+db.BPBOnlineBooksCollectionMapReduce.mapReduce( 
+   function() { emit(this.Year,1); },
+   function(key, values) {return Array.sum(values)}, {  
+      query:{Tags:{$in:['Programming']}},  
+      out:"MapReduceCollection" 
+   };
+
+/* Code 2 */
+
+db.BPBOnlineBooksCollectionMapReduce.mapReduce( 
+   function() { emit(this.Year,1); },
+   function(key, values) {return Array.sum(values)}, {  
+      query:{Tags:{$in:['Programming']}},  
+      out:"MapReduceCollection" 
+   }
+).find();
+
+
+/* Code 3 */
+
+db.BPBOnlineBooksCollectionMapReduce.mapReduce( 
+   function() { emit(this.Year,1); },
+   function(key, values) {return Array.sum(values)}, {  
+      query:{Tags:{$in:['Programming']}},  
+      out: {inline: 1} 
+   }
+).find();
+
+
+/* MongoDB Aggregation Pipeline */
+
+
+/* Code 1 */
+ 
+var BPBBooksBestSellingEditionsAggregationPipeline = [{
+    'Title': 'Cloud Computing',
+    'Year': '2019',
+    'ISBN': '9789388511407',
+    'Pages': 330,
+    'Weight': '570gm',
+    'Dimension': '23x19x1.5cm',
+    'Tags': ['Cloud Computing', 'Cloud Computing Concepts', 'Non Programming'],
+    'InStock': [{
+            'Type': 'Paperback',
+            'Quantity': 3000
+        },
+        {
+            'Type': 'Hardcover',
+            'Quantity': 1500
+        }
+    ],
+    'SpecialOfferDiscount': '100'
+}, {
+    'Title': 'Introduction to Digital Marketing 101 : Easy to Learn and Implement Hands-on Guide for Digital Marketing',
+    'Year': '2019',
+    'ISBN': '9789389328189',
+    'Pages': 464,
+    'Tags': ['Digital Marketing', 'Digital Marketing Tips', 'Non Programming'],
+    'InStock': [{
+            'Type': 'Paperback',
+            'Quantity': 4000
+        },
+        {
+            'Type': 'Hardcover',
+            'Quantity': 2300
+        }
+    ]
+}, {
+    'Title': 'IOT and Smart Cities: Your Smart City Planning Guide',
+    'Year': '2019',
+    'ISBN': '9789388511322',
+    'Pages': 242,
+    'Weight': '357gm',
+    'Dimension': '22.5x15x1.5gm',
+    'Tags': ['Internet of Things', 'IoT', 'Smart City', 'Planning Guide', 'Non Programming'],
+    'InStock': [{
+            'Type': 'Paperback',
+            'Quantity': 2000
+        },
+        {
+            'Type': 'Hardcover',
+            'Quantity': 1000
+        }
+    ] ,
+    'SpecialOfferDiscount': '200'
+}, {
+    'Title': 'Machine Learning with Python',
+    'Year': '2018',
+    'ISBN': '9789386551931',
+    'Pages': 267,
+    'Tags': ['Python', 'Machine Learning', 'Python Programming', 'Programming'],
+    'InStock': [{
+            'Type': 'Paperback',
+            'Quantity': 4500
+        },
+        {
+            'Type': 'Hardcover',
+            'Quantity': 1300
+        }
+    ]
+},{
+    'Title': 'Programming In Python',
+    'Year': '2018',
+    'ISBN': '9789386551276',
+    'Pages': 267,
+    'Tags': ['Python', 'Machine Learning', 'Python Programming', 'Programming'],
+    'InStock': [{
+            'Type': 'Paperback',
+            'Quantity': 4000
+        },
+        {
+            'Type': 'Hardcover',
+            'Quantity': 1500
+        }
+    ]
+},  {
+    'Title': 'Artificial Intelligence Ethics and International Law: An Introduction',
+    'Year': '2019',
+    'ISBN': ' 9789388511629',
+    'Pages': 188,
+    'Weight': '268gm',
+    'Tags': ['Artificial Intelligence', 'International Law', 'AI', 'Artificial Intelligence Ethics', 'Non Programming'],
+    'InStock': [{
+            'Type': 'Paperback',
+            'Quantity': 5200
+        },
+        {
+            'Type': 'Hardcover',
+            'Quantity': 3300
+        }
+    ]
+}, {
+    'Title': 'A Practical Approach for Machine Learning and Deep Learning Algorithms',
+    'Year': '2019',
+    'ISBN': '9789388511131',
+    'Pages': 280,
+    'Weight': '424gm',
+    'Tags': ['Machine Learning', 'Deep Learning', 'Algorithms', 'Programming'],
+    'InStock': [{
+            'Type': 'Paperback',
+            'Quantity': 2800
+        },
+        {
+            'Type': 'Hardcover',
+            'Quantity': 1250
+        }
+    ] ,
+    'SpecialOfferDiscount': '150'
+}, {
+    '_id': '20021111',
+    'Title': 'Introduction to Database Management',
+    'Year': '2002',
+    'ISBN': ' 9788176566384',
+    'Pages': 342,
+    'Tags': ['Database Management', 'DBMS', 'Programming'],
+    'InStock': [{
+            'Type': 'Paperback',
+            'Quantity': 4000
+        },
+        {
+            'Type': 'Hardcover',
+            'Quantity': 3450
+        }
+    ]
+}];
+
+/* Code 2 */
+
+db.BPBOnlineBooksCollectionAggregationPipeline.insert(BPBBooksBestSellingEditionsAggregationPipeline);
+
+/* Example 1 – aggregate() */
+
+/* Code 1 */
+
+db.BPBOnlineBooksCollectionAggregationPipeline.aggregate([
+  { $project : { Year: 1, Tags: 1 } },
+  { $match : {Tags:{$in:['Programming']}} },
+  { $group : { _id: '$Year', 'Total Number of Books Having Programming Tag' : { $sum : 1 } } },
+  { $sort : { _id : -1 } }
+]).pretty()
+
+/* Example 2 – aggregate() with $out */
+
+/* Code 1 */ 
+
+db.BPBOnlineBooksCollectionAggregationPipeline.aggregate([
+  { $project : { Year: 1, Tags: 1 } },
+  { $match : {Tags:{$in:['Programming']}} },
+  { $group : { _id: '$Year', 'Total Number of Books Having Programming Tag' : { $sum : 1 } } },
+  { $sort : { _id : -1 } },
+  { $out : 'AggregationPipelineCollection' }
+]);

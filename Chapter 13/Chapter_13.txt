@@ -1,0 +1,210 @@
+/* Examples and use of Query Selectors */
+
+/* Code 1 */
+
+var BPBBooksBestSellingEditionsQuerySelectors = [{
+    'Title': 'Cloud Computing',
+    'Year': '2019',
+    'ISBN': '9789388511407',
+    'Pages': 330,
+    'Weight': '570gm',
+    'Dimension': '23x19x1.5cm',
+    'Tags': ['Cloud Computing', 'Cloud Computing Concepts', 'Non Programming'],
+    'InStock': [{
+            'Type': 'Paperback',
+            'Quantity': 3000
+        },
+        {
+            'Type': 'Hardcover',
+            'Quantity': 1500
+        }
+    ],
+    'SpecialOfferDiscount': '100'
+}, {
+    'Title': 'Introduction to Digital Marketing 101 : Easy to Learn and Implement Hands-on Guide for Digital Marketing',
+    'Year': '2019',
+    'ISBN': '9789389328189',
+    'Pages': 464,
+    'Tags': ['Digital Marketing', 'Digital Marketing Tips', 'Non Programming'],
+    'InStock': [{
+            'Type': 'Paperback',
+            'Quantity': 4000
+        },
+        {
+            'Type': 'Hardcover',
+            'Quantity': 2300
+        }
+    ]
+}, {
+    'Title': 'IOT and Smart Cities: Your Smart City Planning Guide',
+    'Year': '2019',
+    'ISBN': '9789388511322',
+    'Pages': 242,
+    'Weight': '357gm',
+    'Dimension': '22.5x15x1.5gm',
+    'Tags': ['Internet of Things', 'IoT', 'Smart City', 'Planning Guide', 'Non Programming'],
+    'InStock': [{
+            'Type': 'Paperback',
+            'Quantity': 2000
+        },
+        {
+            'Type': 'Hardcover',
+            'Quantity': 1000
+        }
+    ] ,
+    'SpecialOfferDiscount': '200'
+}, {
+    'Title': 'Machine Learning with Python',
+    'Year': '2018',
+    'ISBN': '9789386551931',
+    'Pages': 267,
+    'Tags': ['Python', 'Machine Learning', 'Python Programming', 'Programming'],
+    'InStock': [{
+            'Type': 'Paperback',
+            'Quantity': 4500
+        },
+        {
+            'Type': 'Hardcover',
+            'Quantity': 1300
+        }
+    ]
+}, {
+    'Title': 'Artificial Intelligence Ethics and International Law: An Introduction',
+    'Year': '2019',
+    'ISBN': ' 9789388511629',
+    'Pages': 188,
+    'Weight': '268gm',
+    'Tags': ['Artificial Intelligence', 'International Law', 'AI', 'Artificial Intelligence Ethics', 'Non Programming'],
+    'InStock': [{
+            'Type': 'Paperback',
+            'Quantity': 5200
+        },
+        {
+            'Type': 'Hardcover',
+            'Quantity': 3300
+        }
+    ]
+}, {
+    'Title': 'A Practical Approach for Machine Learning and Deep Learning Algorithms',
+    'Year': '2019',
+    'ISBN': '9789388511131',
+    'Pages': 280,
+    'Weight': '424gm',
+    'Tags': ['Machine Learning', 'Deep Learning', 'Algorithms', 'Programming'],
+    'InStock': [{
+            'Type': 'Paperback',
+            'Quantity': 2800
+        },
+        {
+            'Type': 'Hardcover',
+            'Quantity': 1250
+        }
+    ] ,
+    'SpecialOfferDiscount': '150'
+}, {
+    '_id': '20021111',
+    'Title': 'Introduction to Database Management',
+    'Year': '2002',
+    'ISBN': ' 9788176566384',
+    'Pages': 342,
+    'Tags': ['Database Management', 'DBMS', 'Programming'],
+    'InStock': [{
+            'Type': 'Paperback',
+            'Quantity': 4000
+        },
+        {
+            'Type': 'Hardcover',
+            'Quantity': 3450
+        }
+    ]
+}];
+
+/* Code 2 */
+
+db.BPBOnlineBooksCollectionQuerySelectors.insert(BPBBooksBestSellingEditionsQuerySelectors);
+
+/* Examples of Comparison Selectors */
+
+/* Example 1 - $gt Comparison Selector */
+
+/* Code 1 */
+
+db.BPBOnlineBooksCollectionQuerySelectors.find({
+    "InStock.Quantity": {
+        $gt: 2500
+    }
+}).pretty();
+
+/* Example 3 - $in Comparison Selector */
+
+/* Code 1 */
+
+db.BPBOnlineBooksCollectionQuerySelectors.find({
+    "Tags": {
+        $in: ["Machine Learning", "DBMS", "AI"]
+    }
+}).pretty();
+
+/* Examples of Logical Selectors */
+
+/* Example 1 - $and Logical Selector */
+
+/* Code 1 */
+
+db.BPBOnlineBooksCollectionQuerySelectors.find({
+    $and: [{
+        SpecialOfferDiscount: {
+            $gte: 150
+        }
+    }, {
+        Year: {
+            $eq: "2019"
+        }
+    }]
+}).pretty();
+
+/* Example 2 - $not Logical Selector */
+
+/* Code 1 */
+
+db.BPBOnlineBooksCollectionQuerySelectors.find({
+    Year: {
+        $not: {
+            $eq: "2019"
+        }
+    }
+}).pretty();
+
+/* Examples of Element Selectors */
+
+/* Example 1 - $exists Element Selector */
+
+/* Code 1 */
+
+db.BPBOnlineBooksCollectionQuerySelectors.find({
+    SpecialOfferDiscount: {
+        $exists: true
+    }
+}).pretty();
+
+/* Examples of Array Selectors */
+
+/* Example 1 - $all Array Selector */
+
+/* Code 1 */
+
+db.BPBOnlineBooksCollectionQuerySelectors.find({
+    Tags: {
+        $all: ["Machine Learning", "Programming"]
+    }
+}).pretty();
+
+/* Example 1 - $regex Evaluation Selector */
+
+/* Code 1 */
+
+db.BPBOnlineBooksCollectionQuerySelectors.find({
+    Title: {
+        $regex: /Machine/
+    }
+}).pretty();

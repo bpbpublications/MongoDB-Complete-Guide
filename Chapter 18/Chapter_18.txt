@@ -1,0 +1,113 @@
+/* Starting with the MongoDB Replication on Windows Machine */
+
+/* Stop the existing MongoDB Service from Windows Service Manager as explained in the Book Chapter */
+
+/* Create 3 new Folders which will contain the MongoDB Data Files */
+
+•	C:\Program Files\MongoDB\Server\4.4\data\BPBOnlineDBPS (Data Directory for our Primary Server or Instance)
+•	C:\Program Files\MongoDB\Server\4.4\data\BPBOnlineDBSS1 (Data Directory for our Secondary Server 1)
+•	C:\Program Files\MongoDB\Server\4.4\data\BPBOnlineDBSS2 (Data Directory for our Secondary Server 2)
+
+/* Create 3 new Folders which will contain the MongoDB Log Files */
+
+•	C:\Program Files\MongoDB\Server\4.4\log\BPBOnlineDBPS (Log Directory for our Primary Server or Instance)
+•	C:\Program Files\MongoDB\Server\4.4\log\BPBOnlineDBSS1 (Log Directory for our Secondary Server 1)
+•	C:\Program Files\MongoDB\Server\4.4\log\BPBOnlineDBSS2 (Log Directory for our Secondary Server 2)
+
+/* Create 3 Files with name as “mongod.log” under each of our newly created Folders which are under the parent directory “log” */
+
+•	C:\Program Files\MongoDB\Server\4.4\log\BPBOnlineDBPS\mongod.log (Log File for our Primary Server or Instance)
+•	C:\Program Files\MongoDB\Server\4.4\log\BPBOnlineDBSS1\mongod.log (Log File for our Secondary Server 1)
+•	C:\Program Files\MongoDB\Server\4.4\log\BPBOnlineDBSS2\mongod.log (Log File for our Secondary Server 2)
+
+/* Start the First Server with the help of “mongod” command by giving few parameters from the Command Prompt in Administrator Mode*/
+ 
+mongod --dbpath "C:\Program Files\MongoDB\Server\4.4\data\BPBOnlineDBPS" --logpath "C:\Program Files\MongoDB\Server\4.4\log\BPBOnlineDBPS\mongod.log" --port 27017 –storageEngine wiredTiger --journal --replSet BPBOnlineReplicaSet
+
+/* Open the another command prompt as Administrator Mode and navigate to the bin directory of your MongoDB Installation Path : "C:\Program Files\MongoDB\Server\4.4\bin" */
+
+/* Type the Following Command */
+
+mongo --host localhost --port 27017 
+
+/* Type the Following Command in Mongo Shell */
+
+show dbs
+
+/* Create a Replica Set Variable as follows */
+
+replicaSetConfig = {
+    _id: "BPBOnlineReplicaSet",
+    members: [{
+        _id: 0,
+        host: "localhost:27017"
+    }]
+}
+
+/* Initate Replica Set */
+
+rs.initiate(replicaSetConfig)
+
+/* Press Enter Key, This will change the Prompt to Primary from Secondary */
+
+/* Verify Replica Set Status */
+
+rs.status()
+
+/* Add New Members to Replica Set */
+
+mongod --dbpath "C:\Program Files\MongoDB\Server\4.4\data\BPBOnlineDBSS1" --logpath "C:\Program Files\MongoDB\Server\4.4\log\BPBOnlineDBSS1\mongod.log" --port 27018 –storageEngine wiredTiger --journal --replSet BPBOnlineReplicaSet
+
+/* Add First Secondary Instance in the Replica Set */
+
+rs.add("localhost:27018")
+
+/* Add Second Secondary Instance which is the Third Member of the Replica Set */
+
+mongod --dbpath "C:\Program Files\MongoDB\Server\4.4\data\BPBOnlineDBSS2" --logpath "C:\Program Files\MongoDB\Server\4.4\log\BPBOnlineDBSS2\mongod.log" --port 27019 –storageEngine wiredTiger --journal --replSet BPBOnlineReplicaSet
+
+/* Add Secondary Member to Replica Set */
+
+rs.add("localhost:27019")
+
+/* Again Verify the Status of Replica Set, Here you will see the new Secondary Members Added to the Replica Set */
+
+rs.status()
+
+/* Check the statuis of the Primary Member in the Replica Set */
+
+rs.isMaster()
+
+/* Verifying the MongoDB Replication using Data */
+
+/* Open MongoDB Shell and type the following commands */
+
+use BPBOnlineRepliationDB
+db. BPBOnlineRepliationCollection.insert({"booktitle":"Docker Demystified"})
+db. BPBOnlineRepliationCollection.insert({"booktitle":"Hardware Description Language Demystified"})
+db.BPBOnlineRepliationCollection.find().pretty()
+
+/* Open the MongoDB Shell of our Secondary Server in the Replica Set using the new command prompt with Administrative mode and running the following command */
+
+mongo --host localhost --port 27018
+
+/* In the same MongoDB Shell of Secondary Server of Replica Set type the following Command */
+
+use BPBOnlineRepliationDB
+db.BPBOnlineRepliationCollection.find().pretty()
+
+/* After you run this above commands from the Secondary Server first time then it will give you the error as some configuration needs to be happen from our Secondary Servers Shell */
+
+/* In Order to resolve the above issue we should run the following command on the MongoDB Shell of both of our Secondary Servers */
+
+rs.secondaryOk() 
+rs.status()
+
+/* In MongoDB Shell of Primary Server and add one more Document in the same collection by giving the following command */
+
+db.BPBOnlineRepliationCollection.insert({"booktitle":"MongoDB Replication"})
+
+/* In the MongoDB Shell of any of the Secondary Server type the following command to verify that if the replication has taken place and you can able to see the documents including the newly created document */
+
+use BPBOnlineRepliationDB
+db.BPBOnlineRepliationCollection.find().pretty()

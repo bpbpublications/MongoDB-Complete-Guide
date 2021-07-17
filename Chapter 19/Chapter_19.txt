@@ -1,0 +1,556 @@
+/* Starting with the MongoDB Sharding on Windows Machine */
+
+/* Step 1 - Stop the existing MongoDB Service from Windows Service Manager as explained in the Book Chapter */
+
+/* Step 2 - Create the First Replica Set (our First Shard) */
+
+/* For MongoDB Data Files */
+
+mkdir "c:\MongoDB-Sharding\data\BPBOnlineShard1\BPBOnlineReplicaSet1\BPBOnlineDBS1" "c:\MongoDB-Sharding\data\BPBOnlineShard1\BPBOnlineReplicaSet1\BPBOnlineDBS2" "c:\MongoDB-Sharding\data\BPBOnlineShard1\BPBOnlineReplicaSet1\BPBOnlineDBS3"
+
+
+/* For MongoDB Log Files */
+
+mkdir "c:\MongoDB-Sharding\log\BPBOnlineShard1\BPBOnlineReplicaSet1\BPBOnlineDBS1" "c:\MongoDB-Sharding\log\BPBOnlineShard1\BPBOnlineReplicaSet1\BPBOnlineDBS2" "c:\MongoDB-Sharding\log\BPBOnlineShard1\BPBOnlineReplicaSet1\BPBOnlineDBS3"
+
+
+/* Structre will be like the following */
+
+•	c:\MongoDB-Sharding\data
+•	c:\MongoDB-Sharding\log
+
+/* For MongoDB Data Files (Complete Path) */
+
+•	<Main Directory>\data\BPBOnlineShard1\BPBOnlineReplicaSet1\BPBOnlineDBS1
+•	<Main Directory>\data\BPBOnlineShard1\BPBOnlineReplicaSet1\BPBOnlineDBS2
+•	<Main Directory>\data\BPBOnlineShard1\BPBOnlineReplicaSet1\BPBOnlineDBS3
+
+
+/* For MongoDB Log Files (Complete Path) */
+
+•	<Main Directory>\log\BPBOnlineShard1\BPBOnlineReplicaSet1\BPBOnlineDBS1
+•	<Main Directory>\log\BPBOnlineShard1\BPBOnlineReplicaSet1\BPBOnlineDBS2
+•	<Main Directory>\log\BPBOnlineShard1\BPBOnlineReplicaSet1\BPBOnlineDBS3
+
+
+/* <Main Directory> = c:\MongoDB-Sharding\ */
+/* "BPBOnlineDBS1", "BPBOnlineDBS2" and "BPBOnlineDBS3" are the names of the Database Server Directories */
+
+/* Start our First Server with the help of "mongod" command by giving few parameters as mentioned below */
+
+mongod --replSet BPBOnlineReplicaSet1 --dbpath "c:\MongoDB-Sharding\data\BPBOnlineShard1\BPBOnlineReplicaSet1\BPBOnlineDBS1" --logpath "c:\MongoDB-Sharding\log\BPBOnlineShard1\BPBOnlineReplicaSet1\BPBOnlineDBS1\mongod.log" --port 37017 --shardsvr --install --serviceName "BPBOnlineSharding MongoDB 37017" --serviceDisplayName "BPBOnlineSharding MongoDB 37017" --serviceDescription "MongoDB on Port 37017 BPBOnlineShard1-BPBOnlineReplicaSet1-BPBOnlineDBS1"
+
+/* Type the below command to start this Windows Service from your Command Prompt which is already opened in the Administrative Mode */
+
+net start  "<Name of the Windows Service>"
+
+/* In Our Case it is: */
+
+net start "BPBOnlineSharding MongoDB 37017"
+
+/* Start our Second Server with the help of "mongod" command by giving few parameters as mentioned below */
+
+mongod --replSet BPBOnlineReplicaSet1 --dbpath "c:\MongoDB-Sharding\data\BPBOnlineShard1\BPBOnlineReplicaSet1\BPBOnlineDBS2" --logpath "c:\MongoDB-Sharding\log\BPBOnlineShard1\BPBOnlineReplicaSet1\BPBOnlineDBS2\mongod.log" --port 37018 --shardsvr --install --serviceName "BPBOnlineSharding MongoDB 37018" --serviceDisplayName "BPBOnlineSharding MongoDB 37018" --serviceDescription "MongoDB on Port 37018 BPBOnlineShard1-BPBOnlineReplicaSet1-BPBOnlineDBS2"
+
+
+/* Type the below command to start this Windows Service from your Command Prompt which is already opened in the Administrative Mode */
+
+net start  "<Name of the Windows Service>"
+
+/* In Our Case it is: */
+
+net start "BPBOnlineSharding MongoDB 37018"
+
+/* Start our Third Server with the help of "mongod" command by giving few parameters as mentioned below */
+
+mongod --replSet BPBOnlineReplicaSet1 --dbpath "c:\MongoDB-Sharding\data\BPBOnlineShard1\BPBOnlineReplicaSet1\BPBOnlineDBS3" --logpath "c:\MongoDB-Sharding\log\BPBOnlineShard1\BPBOnlineReplicaSet1\BPBOnlineDBS3\mongod.log" --port 37019 --shardsvr --install --serviceName "BPBOnlineSharding MongoDB 37019" --serviceDisplayName "BPBOnlineSharding MongoDB 37019" --serviceDescription "MongoDB on Port 37019 BPBOnlineShard1-BPBOnlineReplicaSet1-BPBOnlineDBS3"
+
+
+/* Type the below command to start this Windows Service from your Command Prompt which is already opened in the Administrative Mode */
+
+net start  "<Name of the Windows Service>"
+
+/* In Our Case it is: */
+
+net start "BPBOnlineSharding MongoDB 37019"
+
+/* Now as our all 3 MongoDB Server "mongod" Instances has been successfully started we can open the "Windows Service Manager" */
+
+/* You will see that Services will be Named like this under Windows Service Manager and the status should be Running */
+
+"BPBOnlineSharding MongoDB<Port Number>" 
+
+/* Open the existing command prompt (which was already opened as Administrator Mode), if you are not already in the "bin" directory of your MongoDB Installation Path then you should first navigate to the bin directory of your MongoDB Installation Path which is "C:\Program Files\MongoDB\Server\4.4\bin" in our case and then type the following command"
+
+mongo --port 37017
+
+/* We need to initiate the replication process and for this we need to add our all the  members details with their host and port, in our case we are creating a variable with the name "BPBOnlineReplicaSet1Config" having the "_id" same as of our Replica Set which is "BPBOnlineReplicaSet1" and the members details have the "_id" as 0,1 and 2 (For First, Second and Third Member in the Replica Set) and their host value which is  host and port values and it is "localhost:37017", "localhost:37018" and "localhost:37019" (For First, Second and Third Member in the Replica Set)  in our case. */
+
+BPBOnlineReplicaSet1Config = {
+    _id: "BPBOnlineReplicaSet1",
+members: [{
+            _id: 0,
+host: "localhost:37017"
+        },
+        {
+            _id: 1,
+host: "localhost:37018"
+        },
+        {
+            _id: 2,
+host: "localhost:37019"
+        }
+    ]
+};
+
+/* We can use this variable "BPBOnlineReplicaSet1Config" during the initialization command for Replica Set Creation. Type the following command to initiate the Replication Process */
+
+rs.initiate(BPBOnlineReplicaSet1Config)
+
+/* Usually it takes some time to decide for the Primary and it could be any member which is chosen to be the primary member of the Replica Set, But usually the First Member given in the Configuration File becomes "Primary Member", this process can take few seconds, So if you just Press the Enter Key without typing anything and this could change the prompt to "BPBOnlineReplicaSet1:PRIMARY>" */
+
+
+/* Verify the Status of our Replica Set using the command mentioned below */
+
+rs.status()
+
+
+/* Step 3 – Create the Second Replica Set (our Second Shard) */
+
+
+/* For MongoDB Data Files */
+
+mkdir "c:\MongoDB-Sharding\data\BPBOnlineShard2\BPBOnlineReplicaSet2\BPBOnlineDBS1" "c:\MongoDB-Sharding\data\BPBOnlineShard2\BPBOnlineReplicaSet2\BPBOnlineDBS2" "c:\MongoDB-Sharding\data\BPBOnlineShard2\BPBOnlineReplicaSet2\BPBOnlineDBS3"
+
+
+/* For MongoDB Log Files */
+
+mkdir "c:\MongoDB-Sharding\log\BPBOnlineShard2\BPBOnlineReplicaSet2\BPBOnlineDBS1" "c:\MongoDB-Sharding\log\BPBOnlineShard2\BPBOnlineReplicaSet2\BPBOnlineDBS2" "c:\MongoDB-Sharding\log\BPBOnlineShard2\BPBOnlineReplicaSet2\BPBOnlineDBS3"
+
+
+/* Structre will be like the following */
+
+•	c:\MongoDB-Sharding\data
+•	c:\MongoDB-Sharding\log
+
+/* For MongoDB Data Files (Complete Path) */
+
+•	<Main Directory>\data\BPBOnlineShard2\BPBOnlineReplicaSet2\BPBOnlineDBS1
+•	<Main Directory>\data\BPBOnlineShard2\BPBOnlineReplicaSet2\BPBOnlineDBS2
+•	<Main Directory>\data\BPBOnlineShard2\BPBOnlineReplicaSet2\BPBOnlineDBS3
+
+
+/* For MongoDB Log Files (Complete Path) */
+
+•	<Main Directory>\log\BPBOnlineShard2\BPBOnlineReplicaSet2\BPBOnlineDBS1
+•	<Main Directory>\log\BPBOnlineShard2\BPBOnlineReplicaSet2\BPBOnlineDBS2
+•	<Main Directory>\log\BPBOnlineShard2\BPBOnlineReplicaSet2\BPBOnlineDBS3
+
+/* <Main Directory> = c:\MongoDB-Sharding\ */
+/* "BPBOnlineDBS1", "BPBOnlineDBS2" and "BPBOnlineDBS3" are the names of the Database Server Directories */
+
+/* Start our First Server with the help of "mongod" command by giving few parameters as mentioned below */
+
+mongod --replSet BPBOnlineReplicaSet2 --dbpath "c:\MongoDB-Sharding\data\BPBOnlineShard2\BPBOnlineReplicaSet2\BPBOnlineDBS1" --logpath "c:\MongoDB-Sharding\log\BPBOnlineShard2\BPBOnlineReplicaSet2\BPBOnlineDBS1\mongod.log" --port 47017 --shardsvr --install --serviceName "BPBOnlineSharding MongoDB 47017" --serviceDisplayName "BPBOnlineSharding MongoDB 47017" --serviceDescription "MongoDB on Port 47017 BPBOnlineShard2-BPBOnlineReplicaSet2-BPBOnlineDBS1"
+
+/* Type the below command to start this Windows Service from your Command Prompt which is already opened in the Administrative Mode */
+
+net start  "<Name of the Windows Service>"
+
+/* In Our Case it is: */
+
+net start "BPBOnlineSharding MongoDB 47017"
+
+/* Start our Second Server with the help of "mongod" command by giving few parameters as mentioned below */
+
+mongod --replSet BPBOnlineReplicaSet2 --dbpath "c:\MongoDB-Sharding\data\BPBOnlineShard2\BPBOnlineReplicaSet2\BPBOnlineDBS2" --logpath "c:\MongoDB-Sharding\log\BPBOnlineShard2\BPBOnlineReplicaSet2\BPBOnlineDBS2\mongod.log" --port 47018 --shardsvr --install --serviceName "BPBOnlineSharding MongoDB 47018" --serviceDisplayName "BPBOnlineSharding MongoDB 47018" --serviceDescription "MongoDB on Port 47018 BPBOnlineShard2-BPBOnlineReplicaSet2-BPBOnlineDBS2"
+
+/* Type the below command to start this Windows Service from your Command Prompt which is already opened in the Administrative Mode */
+
+net start  "<Name of the Windows Service>"
+
+/* In Our Case it is: */
+
+net start "BPBOnlineSharding MongoDB 47018"
+
+/* Start our Third Server with the help of "mongod" command by giving few parameters as mentioned below */
+
+mongod --replSet BPBOnlineReplicaSet2 --dbpath "c:\MongoDB-Sharding\data\BPBOnlineShard2\BPBOnlineReplicaSet2\BPBOnlineDBS3" --logpath "c:\MongoDB-Sharding\log\BPBOnlineShard2\BPBOnlineReplicaSet2\BPBOnlineDBS3\mongod.log" --port 47019 --shardsvr --install --serviceName "BPBOnlineSharding MongoDB 47019" --serviceDisplayName "BPBOnlineSharding MongoDB 47019" --serviceDescription "MongoDB on Port 47019 BPBOnlineShard2-BPBOnlineReplicaSet2-BPBOnlineDBS3"
+
+
+/* Type the below command to start this Windows Service from your Command Prompt which is already opened in the Administrative Mode */
+
+net start  "<Name of the Windows Service>"
+
+/* In Our Case it is: */
+
+net start "BPBOnlineSharding MongoDB 47019"
+
+/* Now as our all 3 MongoDB Server "mongod" Instances has been successfully started we can open the "Windows Service Manager" */
+
+/* You will see that Services will be Named like this under Windows Service Manager and the status should be Running */
+
+"BPBOnlineSharding MongoDB<Port Number>" 
+
+/* Open the existing command prompt (which was already opened as Administrator Mode), if you are not already in the "bin" directory of your MongoDB Installation Path then you should first navigate to the bin directory of your MongoDB Installation Path which is "C:\Program Files\MongoDB\Server\4.4\bin" in our case and then type the following command"
+
+mongo --port 47017
+
+/* We need to initiate the replication process and for this we need to add our all the  members details with their host and port, in our case we are creating a variable with the name "BPBOnlineReplicaSet2Config" having the "_id" same as of our Replica Set which is "BPBOnlineReplicaSet2" and the members details have the "_id" as 0,1 and 2 (For First, Second and Third Member in the Replica Set) and their host value which is  host and port values and it is "localhost:47017", "localhost:47018" and "localhost:47019" (For First, Second and Third Member in the Replica Set)  in our case. */
+
+BPBOnlineReplicaSet2Config = {
+    _id: "BPBOnlineReplicaSet2",
+members: [{
+            _id: 0,
+host: "localhost:47017"
+        },
+        {
+            _id: 1,
+host: "localhost:47018"
+        },
+        {
+            _id: 2,
+host: "localhost:47019"
+        }
+    ]
+};
+
+/* We can use this variable "BPBOnlineReplicaSet2Config" during the initialization command for Replica Set Creation. Type the following command to initiate the Replication Process */
+
+rs.initiate(BPBOnlineReplicaSet2Config)
+
+/* Usually it takes some time to decide for the Primary and it could be any member which is chosen to be the primary member of the Replica Set, But usually the First Member given in the Configuration File becomes "Primary Member", this process can take few seconds, So if you just Press the Enter Key without typing anything and this could change the prompt to "BPBOnlineReplicaSet2:PRIMARY>" */
+
+
+/* Verify the Status of our Replica Set using the command mentioned below */
+
+rs.status()
+
+/* Step 4 – Create the Third Replica Set (our Third Shard) */
+
+/* For MongoDB Data Files */
+
+mkdir "c:\MongoDB-Sharding\data\BPBOnlineShard3\BPBOnlineReplicaSet3\BPBOnlineDBS1" "c:\MongoDB-Sharding\data\BPBOnlineShard3\BPBOnlineReplicaSet3\BPBOnlineDBS2" "c:\MongoDB-Sharding\data\BPBOnlineShard3\BPBOnlineReplicaSet3\BPBOnlineDBS3"
+
+
+/* For MongoDB Log Files */
+
+mkdir "c:\MongoDB-Sharding\log\BPBOnlineShard3\BPBOnlineReplicaSet3\BPBOnlineDBS1" "c:\MongoDB-Sharding\log\BPBOnlineShard3\BPBOnlineReplicaSet3\BPBOnlineDBS2" "c:\MongoDB-Sharding\log\BPBOnlineShard3\BPBOnlineReplicaSet3\BPBOnlineDBS3"
+
+
+/* Structre will be like the following */
+
+•	c:\MongoDB-Sharding\data
+•	c:\MongoDB-Sharding\log
+
+/* For MongoDB Data Files (Complete Path) */
+
+•	<Main Directory>\data\BPBOnlineShard3\BPBOnlineReplicaSet3\BPBOnlineDBS1
+•	<Main Directory>\data\BPBOnlineShard3\BPBOnlineReplicaSet3\BPBOnlineDBS2
+•	<Main Directory>\data\BPBOnlineShard3\BPBOnlineReplicaSet3\BPBOnlineDBS3
+
+
+/* For MongoDB Log Files (Complete Path) */
+
+•	<Main Directory>\log\BPBOnlineShard3\BPBOnlineReplicaSet3\BPBOnlineDBS1
+•	<Main Directory>\log\BPBOnlineShard3\BPBOnlineReplicaSet3\BPBOnlineDBS2
+•	<Main Directory>\log\BPBOnlineShard3\BPBOnlineReplicaSet3\BPBOnlineDBS3
+
+
+/* <Main Directory> = c:\MongoDB-Sharding\ */
+/* "BPBOnlineDBS1", "BPBOnlineDBS2" and "BPBOnlineDBS3" are the names of the Database Server Directories */
+
+/* Start our First Server with the help of "mongod" command by giving few parameters as mentioned below */
+
+mongod --replSet BPBOnlineReplicaSet3 --dbpath "c:\MongoDB-Sharding\data\BPBOnlineShard3\BPBOnlineReplicaSet3\BPBOnlineDBS1" --logpath "c:\MongoDB-Sharding\log\BPBOnlineShard3\BPBOnlineReplicaSet3\BPBOnlineDBS1\mongod.log" --port 57017 --shardsvr --install --serviceName "BPBOnlineSharding MongoDB 57017" --serviceDisplayName "BPBOnlineSharding MongoDB 57017" --serviceDescription "MongoDB on Port 57017 BPBOnlineShard3-BPBOnlineReplicaSet3-BPBOnlineDBS1"
+
+/* Type the below command to start this Windows Service from your Command Prompt which is already opened in the Administrative Mode */
+
+net start  "<Name of the Windows Service>"
+
+/* In Our Case it is: */
+
+net start "BPBOnlineSharding MongoDB 57017"
+
+/* Start our Second Server with the help of "mongod" command by giving few parameters as mentioned below */
+
+mongod --replSet BPBOnlineReplicaSet2 --dbpath "c:\MongoDB-Sharding\data\BPBOnlineShard2\BPBOnlineReplicaSet2\BPBOnlineDBS2" --logpath "c:\MongoDB-Sharding\log\BPBOnlineShard2\BPBOnlineReplicaSet2\BPBOnlineDBS2\mongod.log" --port 47018 --shardsvr --install --serviceName "BPBOnlineSharding MongoDB 47018" --serviceDisplayName "BPBOnlineSharding MongoDB 47018" --serviceDescription "MongoDB on Port 47018 BPBOnlineShard2-BPBOnlineReplicaSet2-BPBOnlineDBS2"
+
+/* Type the below command to start this Windows Service from your Command Prompt which is already opened in the Administrative Mode */
+
+net start  "<Name of the Windows Service>"
+
+/* In Our Case it is: */
+
+net start "BPBOnlineSharding MongoDB 47018"
+
+/* Start our Third Server with the help of "mongod" command by giving few parameters as mentioned below */
+
+mongod --replSet BPBOnlineReplicaSet3 --dbpath "c:\MongoDB-Sharding\data\BPBOnlineShard3\BPBOnlineReplicaSet3\BPBOnlineDBS3" --logpath "c:\MongoDB-Sharding\log\BPBOnlineShard3\BPBOnlineReplicaSet3\BPBOnlineDBS3\mongod.log" --port 57019 --shardsvr --install --serviceName "BPBOnlineSharding MongoDB 57019" --serviceDisplayName "BPBOnlineSharding MongoDB 57019" --serviceDescription "MongoDB on Port 57019 BPBOnlineShard3-BPBOnlineReplicaSet3-BPBOnlineDBS3"
+
+/* Type the below command to start this Windows Service from your Command Prompt which is already opened in the Administrative Mode */
+
+net start  "<Name of the Windows Service>"
+
+/* In Our Case it is: */
+
+net start "BPBOnlineSharding MongoDB 57019"
+
+/* Now as our all 3 MongoDB Server "mongod" Instances has been successfully started we can open the "Windows Service Manager" */
+
+/* You will see that Services will be Named like this under Windows Service Manager and the status should be Running */
+
+"BPBOnlineSharding MongoDB<Port Number>" 
+
+/* Open the existing command prompt (which was already opened as Administrator Mode), if you are not already in the "bin" directory of your MongoDB Installation Path then you should first navigate to the bin directory of your MongoDB Installation Path which is "C:\Program Files\MongoDB\Server\4.4\bin" in our case and then type the following command"
+
+mongo --port 57017
+
+/* We need to initiate the replication process and for this we need to add our all the  members details with their host and port, in our case we are creating a variable with the name "BPBOnlineReplicaSet3Config" having the "_id" same as of our Replica Set which is "BPBOnlineReplicaSet3" and the members details have the "_id" as 0,1 and 2 (For First, Second and Third Member in the Replica Set) and their host value which is  host and port values and it is "localhost:57017", "localhost:57018" and "localhost:57019" (For First, Second and Third Member in the Replica Set)  in our case. */
+
+BPBOnlineReplicaSet3Config = {
+    _id: "BPBOnlineReplicaSet3",
+members: [{
+            _id: 0,
+host: "localhost:57017"
+        },
+        {
+            _id: 1,
+host: "localhost:57018"
+        },
+        {
+            _id: 2,
+host: "localhost:57019"
+        }
+    ]
+};
+
+/* We can use this variable "BPBOnlineReplicaSet3Config" during the initialization command for Replica Set Creation. Type the following command to initiate the Replication Process */
+
+rs.initiate(BPBOnlineReplicaSet3Config)
+
+/* Usually it takes some time to decide for the Primary and it could be any member which is chosen to be the primary member of the Replica Set, But usually the First Member given in the Configuration File becomes "Primary Member", this process can take few seconds, So if you just Press the Enter Key without typing anything and this could change the prompt to "BPBOnlineReplicaSet3:PRIMARY>" */
+
+
+/* Verify the Status of our Replica Set using the command mentioned below */
+
+rs.status()
+
+/* Step 5 – Create the Replica Set of Config Servers in Sharded Environment */
+
+/* For MongoDB Data Files */
+
+mkdir "c:\MongoDB-Sharding\data\BPBOnlineConfigServer\BPBOnlineDBS1" "c:\MongoDB-Sharding\data\BPBOnlineConfigServer\BPBOnlineDBS2" "c:\MongoDB-Sharding\data\BPBOnlineConfigServer\BPBOnlineDBS3"
+
+
+/* For MongoDB Log Files */
+
+mkdir "c:\MongoDB-Sharding\log\BPBOnlineConfigServer\BPBOnlineDBS1" "c:\MongoDB-Sharding\log\BPBOnlineConfigServer\BPBOnlineDBS2" "c:\MongoDB-Sharding\log\BPBOnlineConfigServer\BPBOnlineDBS3"
+
+
+/* Structre will be like the following */
+
+•	c:\MongoDB-Sharding\data
+•	c:\MongoDB-Sharding\log
+
+/* For MongoDB Data Files (Complete Path) */
+
+•	<Main Directory>\data\BPBOnlineConfigServer\BPBOnlineDBS1
+•	<Main Directory>\data\BPBOnlineConfigServer\BPBOnlineDBS2
+•	<Main Directory>\data\BPBOnlineConfigServer\BPBOnlineDBS3
+
+
+/* For MongoDB Log Files (Complete Path) */
+
+•	<Main Directory>\log\BPBOnlineConfigServer\BPBOnlineDBS1
+•	<Main Directory\log\BPBOnlineConfigServer\BPBOnlineDBS2
+•	<Main Directory>\log\BPBOnlineConfigServer\BPBOnlineDBS3
+
+
+/* <Main Directory> = c:\MongoDB-Sharding\ */
+/* "BPBOnlineDBS1", "BPBOnlineDBS2" and "BPBOnlineDBS3" are the names of the Database Server Directories */
+
+/* Start our First Server with the help of "mongod" command by giving few parameters as mentioned below */
+
+mongod –replSet BPBOnlineConfReplicaSet --dbpath "c:\MongoDB-Sharding\data\BPBOnlineConfigServer\BPBOnlineDBS1" --logpath "c:\MongoDB-Sharding\log\BPBOnlineConfigServer\BPBOnlineDBS1\config.log" --port 27040 --configsvr --install --serviceName "BPBOnlineSharding MongoDB 27040" --serviceDisplayName "BPBOnlineSharding MongoDB 27040" --serviceDescription "MongoDB on Port 27040 BPBOnlineConfigServer-BPBOnlineDBS1"
+
+/* Type the below command to start this Windows Service from your Command Prompt which is already opened in the Administrative Mode */
+
+net start  "<Name of the Windows Service>"
+
+/* In Our Case it is: */
+
+net start "BPBOnlineSharding MongoDB 27040"
+
+/* Start our Second Server with the help of "mongod" command by giving few parameters as mentioned below */
+
+mongod --replSet BPBOnlineConfReplicaSet --dbpath "c:\MongoDB-Sharding\data\BPBOnlineConfigServer\BPBOnlineDBS2" --logpath "c:\MongoDB-Sharding\log\BPBOnlineConfigServer\BPBOnlineDBS2\config.log" --port 27041 --configsvr --install --serviceName "BPBOnlineSharding MongoDB 27041" --serviceDisplayName "BPBOnlineSharding MongoDB 27041" --serviceDescription "MongoDB on Port 27041 BPBOnlineConfigServer-BPBOnlineDBS2"
+
+/* Type the below command to start this Windows Service from your Command Prompt which is already opened in the Administrative Mode */
+
+net start  "<Name of the Windows Service>"
+
+/* In Our Case it is: */
+
+net start "BPBOnlineSharding MongoDB 27041"
+
+/* Start our Third Server with the help of "mongod" command by giving few parameters as mentioned below */
+
+mongod --replSet BPBOnlineConfReplicaSet --dbpath "c:\MongoDB-Sharding\data\BPBOnlineConfigServer\BPBOnlineDBS3" --logpath "c:\MongoDB-Sharding\log\BPBOnlineConfigServer\BPBOnlineDBS3\config.log" --port 27042 --configsvr --install --serviceName "BPBOnlineSharding MongoDB 27042" --serviceDisplayName "BPBOnlineSharding MongoDB 27042" --serviceDescription "MongoDB on Port 27042 BPBOnlineConfigServer-BPBOnlineDBS3"
+
+/* Type the below command to start this Windows Service from your Command Prompt which is already opened in the Administrative Mode */
+
+net start  "<Name of the Windows Service>"
+
+/* In Our Case it is: */
+
+net start "BPBOnlineSharding MongoDB 27042"
+
+/* Now as our all 3 MongoDB Server "mongod" Instances has been successfully started we can open the "Windows Service Manager" */
+
+/* You will see that Services will be Named like this under Windows Service Manager and the status should be Running */
+
+"BPBOnlineSharding MongoDB<Port Number>" 
+
+/* Open the existing command prompt (which was already opened as Administrator Mode), if you are not already in the "bin" directory of your MongoDB Installation Path then you should first navigate to the bin directory of your MongoDB Installation Path which is "C:\Program Files\MongoDB\Server\4.4\bin" in our case and then type the following command"
+
+mongo --port 27040
+
+/* We need to initiate the replication process and for this we need to add our all the  members details with their host and port, in our case we are creating a variable with the name "BPBOnlineConfReplicaSetConfig" having the "_id" same as of our Replica Set which is "BPBOnlineConfReplicaSet" and the members details have the "_id" as 0,1 and 2 (For First, Second and Third Member in the Replica Set) and their host value which is  host and port values and it is "localhost:27040", "localhost:27041" and "localhost:27042" (For First, Second and Third Member in the Replica Set)  in our case. */
+
+BPBOnlineConfReplicaSetConfig = {
+    _id: "BPBOnlineConfReplicaSet",
+members: [{
+            _id: 0,
+host: "localhost:27040"
+        },
+        {
+            _id: 1,
+host: "localhost:27041"
+        },
+        {
+            _id: 2,
+host: "localhost:27042"
+        }
+    ]
+};
+
+
+/* We can use this variable "BPBOnlineConfReplicaSetConfig" during the initialization command for Replica Set Creation. Type the following command to initiate the Replication Process */
+
+rs.initiate(BPBOnlineConfReplicaSetConfig)
+
+/* Usually it takes some time to decide for the Primary and it could be any member which is chosen to be the primary member of the Replica Set, But usually the First Member given in the Configuration File becomes "Primary Member", this process can take few seconds, So if you just Press the Enter Key without typing anything and this could change the prompt to "BPBOnlineConfReplicaSet:PRIMARY>" */
+
+
+/* Verify the Status of our Replica Set using the command mentioned below */
+
+rs.status()
+
+/* Step 6 - Starting the MongoDB in Sharded Environment as "mongos" */
+
+/* Open the existing command prompt (which was already opened as Administrator Mode), if you are not already in the "bin" directory of your MongoDB Installation Path then you should first navigate to the bin directory of your MongoDB Installation Path which is "C:\Program Files\MongoDB\Server\4.4\bin" in our case and then type */
+
+mongos --logpath "c:\MongoDB-Sharding\mongos.log" --configdb BPBOnlineConfReplicaSet/localhost:27040,localhost:27041,localhost:27042 --port 27043
+
+/* Note that in --configdb you must specify the Replica Set ID for your Config Servers */
+
+
+/* Open the new command prompt (in Administrator Mode) and then navigate to the bin directory of your MongoDB Installation Path which is "C:\Program Files\MongoDB\Server\4.4\bin" in our case and then type */
+
+mongo --port 27043
+
+/* The above command will start the MongoDB Shell and you can now see that Shell Prompt is coming as "mongos" */
+
+
+/* Step 7 – Adding the MongoDB in Shard Keys */
+
+
+/* In Step 6 we have logged into the MongoDB Shell (Sharding) "mongos" (MongoDB Sharded Environment running at mongo --port 27043), Keep that open and you need to follow these instructions as below */
+
+db.adminCommand( { addshard : "BPBOnlineReplicaSet1/"+"localhost:37017" } );
+db.adminCommand( { addshard : "BPBOnlineReplicaSet2/"+"localhost:47017" } );
+db.adminCommand( { addshard : "BPBOnlineReplicaSet3/"+"localhost:57017" } );
+
+/* We can also write the above commands without concatenation as below */
+
+db.adminCommand( { addshard : "BPBOnlineReplicaSet1/localhost:37017" } );
+
+
+/* We need to enable Sharding for our Database which we would like to use in the Sharded Environment and we can do it using the following command */
+
+db.adminCommand( {enableSharding: "BPBOnlineShardedDB"} )
+
+/* The above command will enable the Sharding to the MongoDB Database mentioned in the above command and you will see the status as "OK" once this command get successfully completed */
+
+/* We will add the Sharded Collection and Specify the Shard Key and we can do it using the following command */
+
+db.adminCommand( {shardCollection: "BPBOnlineShardedDB.BPBOnlineShardedCollection", key: {_id:1} } )
+
+/* Here the db.adminCommand() Method takes first parameter with "shardCollection" key and the value is the string which is the a combination of Database and Collection name <DatabaseName.CollectionName> we would like to use for Sharding. */
+
+/* The second parameter of this command is the Key which is the "Sharded Key" and we can specify the value of our Sharded Key in this parameter. */
+
+/* The above command will enable the Shard Key to the MongoDB Collection mentioned in the above command and you will see the status as "OK" once this command get successfully completed. */
+
+/* Step 8 - Verifying the MongoDB Sharding using Data */
+
+/* In the MongoDB Shell of the Sharded Environment where "mongos" is running (MongoDB Sharded Environment running at mongo --port 27043) and create a new Database and Collection and Insert some Documents, We will be running the following command on the MongoDB Shell of the Sharded Environment where "mongos" is running */
+
+use BPBOnlineShardedDB
+
+db.BPBOnlineShardedCollection.insert([{
+    "booktitle": ".Net Interview Questions - 7th Revised Edition"
+}, {
+    "booktitle": "101 Challenges In C Programming"
+}, {
+    "booktitle": "101 Challenges In C++ Programming"
+}, {
+    "booktitle": "21 Internet Of Things (IOT) Experiments"
+}, {
+    "booktitle": "3D Game Weapons ( Modeling UV Mapping & Texturing )"
+}, {
+    "booktitle": "3D Printing Made Simple"
+}, {
+    "booktitle": "A Practical Approach for Machine Learning and Deep Learning Algorithms"
+}, {
+    "booktitle": "ARTIFICIAL INTELLIGENCE"
+}]);
+
+
+/* Run the Following Command to View the inserted documents */
+
+db.BPBOnlineShardedCollection.find().pretty()
+
+
+/* In the same MongoDB Shell type the following command to verify that if the Sharding has taken place and what is its status around the Shards */
+
+/* db.printShardingStatus(true) */
+
+
+/* We can run one another command to verify that if everything is working fine at Collection Level in the Sharded Environment of our MongoDB */
+
+db.BPBOnlineShardedCollection.getShardDistribution()
+
+
+/* To Login to MongoDB Shell of the Primary Server of Replica Set 2 "BPBOnlineReplicaSet2" */
+
+mongo --port 47017
+
+/* After you login successfully to the MongoDB Shell, enter below given commands */
+
+use BPBOnlineShardedDB
+
+db.BPBOnlineShardedCollection.find().pretty()
+
+
+/* Ones the Documents in the collection keep on adding, in the MongoDB Sharded Environment they will keep on distributed to other Replica Sets too and this is decided by "mongos" */
+
+
+/* Important Notes */
+
+1.	We have shown the Sharding and Created the Replica Sets on the Same Machine only to make you understand Sharding in a Practical Manner so that it is easier for you to do it practically on your Machines.
+
+2.	It is very important to note that in the real environment it is done on separate servers and each Replica Member is created on Separate Server Instance.
+
+3.	Live and production enviorements have separate servers for every instance in the Replica Sets and instead of using "localhost" we use the "IP Address" of the Instances.

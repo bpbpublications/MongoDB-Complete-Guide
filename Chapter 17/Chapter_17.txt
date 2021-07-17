@@ -1,0 +1,102 @@
+/* Stopping MongoDB Services from Command Line – MongoDB Shell Method */
+
+db.shutdownServer()
+
+/* Monitoring and Diagnosing MongoDB */
+
+/* Working with MongoDB Tools and Utilities */
+
+mongostat
+
+mongotop
+
+/* serverStatus */
+db.runCommand( { serverStatus: 1 } )
+
+/* dbStats */
+db.runCommand( {dbStats: 1} )
+
+/* collStats */
+/* db.runCommand( {collStats: "<collection-name>"} ) */
+use BPBCatalogDB
+db.runCommand( {collStats: "BPBCatalogCollection"} )
+
+/* buildInfo */
+db.runCommand( { buildInfo: 1 } )
+
+/* hostInfo */
+db.hostInfo()
+OR
+db.adminCommand( { "hostInfo" : 1 } )
+
+/* listCommands */
+db.runCommand( { listCommands: 1 } )
+
+/* ping */
+db.runCommand( { ping: 1 } )
+
+/* getLog */
+/* db.adminCommand( { getLog: "<value>" } ) */
+
+db.adminCommand( { getLog: "*" } )
+db.adminCommand( { getLog: "global" } )
+db.adminCommand( { getLog: "startupWarnings" } )
+
+/* Backup and Restore with MongoDB */
+
+/* Taking a MongoDB Backup using mongodump */
+
+/* Simple Method */
+
+mongodump --host=<hostname> --port=<port-number> --db=<db-name> --collection=<collection-name>out=<output-path>
+
+/* With Access Control */
+
+mongodump --host=<hostname> --port=<port-number>--db=<db-name> --collection=<collection-name>--username=<user> --authenticationDatabase=admin --out=<output-path>
+
+/* Example */
+mongodump --host=localhost --port=27017 --db=BPBCatalogDB --out="D:\Manu\bpb-db-dump"
+
+/* Restoring a MongoDB Database using mongorestore */
+
+/* Simple Method */
+
+mongorestore --host=<hostname> --port=<port-number>  --db=<db-name><db-dump-path>
+
+/* With Access Control */
+
+mongorestore --host=<hostname> --port=<port-number> --db=<db-name> --username=<user> --authenticationDatabase=admin <db-dump-path>
+
+/* Example */
+
+mongorestore --host=localhost --port=27017 --db=BPBCatalogDB-Backup "D:\Manu\bpb-db-dump"
+
+/* Import and Export with MongoDB */
+
+/* Exporting a MongoDB Data using mongoexport */
+
+/* Simple Method */
+
+mongoexport --host=<hostname> --port=<port-number>  --db=<db-name> --collection=<collection-name>--type=<output-type>out=<output-path>
+
+/* With Access Control */
+
+mongoexport --host=<hostname> --port=<port-number> --db=<db-name> --collection=<collection-name>--username=<user> --authenticationDatabase=admin –type=<output-type> --out=<output-path>
+
+/* Example */
+
+mongoexport --host=localhost --port=27017 --db=BPBCatalogDB --collection=BPBCatalogCollection--type=json --out="D:\Manu\bpb-db-export\BPBCatalogCollection.json"
+
+/* Importing a MongoDB Data using mongoimport */
+
+/* Simple Method */
+
+mongoimport --host=<hostname> --port=<port-number>  --db=<db-name> --collection=<collection-name><file-path>
+
+/* With Access Control */
+
+mongoimport --host=<hostname> --port=<port-number> --db=<db-name> --collection=<collection-name>--username=<user> --authenticationDatabase=admin –type=<file-type><file-path>
+
+/* Example */
+
+mongoimport --host=localhost --port=27017 --db=BPBCatalogDB-Import --collection=BPBCatalogCollection--type=json "D:\Manu\bpb-db-export\BPBCatalogCollection.json"
