@@ -1,0 +1,22 @@
+/* Connecting to MongoDB on Windows */
+
+/* Open a command window and navigate to the bin Directory of MongoDB */
+/* The Path could be like this */
+
+C:\Program Files\MongoDB\Server\4.4\bin
+
+/* Now give the following command */
+
+mongo
+
+/* and Press Enter */
+
+/* Once you give this command and press enter it will open Mongo Shell and we can type Mongo related commands */
+
+/* To test further just issue the following Mongo Command and press enter */
+
+show databases
+
+/* To exit from the MongoDB Shell type the following command and press enter key */
+
+exit

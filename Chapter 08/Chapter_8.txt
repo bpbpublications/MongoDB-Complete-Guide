@@ -1,0 +1,70 @@
+/* List of Languages officially supported by MongoDB */
+
+•	C
+•	C++
+•	C#
+•	Go
+•	Java
+•	Node.js
+•	Perl
+•	PHP
+•	Python
+•	Ruby
+•	Scala
+•	Swift
+
+/* MongoDB Connection Methods */
+
+•	connect()
+•	Mongo()
+•	Mongo.getDB()
+
+/* MongoDB connect() Method */
+
+connect(url,username,password)
+
+OR
+
+db = connect("localhost:27017/bpbOnlineBooks");
+
+
+/* MongoDB Mongo Method */
+
+Mongo(host, clientSideOptions)
+
+OR
+
+MongoDBConnection = Mongo("mongodb://localhost:27017/");
+
+/* MongoDB Mongo.getDB() Method */
+
+Mongo.getDB(database)
+
+OR
+
+db = MongoDBConnection.getDB("BPBOnlineBooksDB");
+
+OR
+
+db = new Mongo().getDB("BPBOnlineBooksDB");
+
+/* MongoDB Database Methods */
+
+•	db.getMongo()
+•	db.hostInfo()
+•	db.stats() 
+•	db.serverStatus() 
+
+/* MongoDB Collection Methods */
+
+•	db.collection.count() 
+•	db.collection.stats() 
+•	db.collection.totalSize() 
+•	db.collection.validate()
+•	db.collection.drop()
+
+/* MongoDB Cursor Methods */
+
+•	cursor.count()
+•	cursor.pretty()
+•	cursor.sort()

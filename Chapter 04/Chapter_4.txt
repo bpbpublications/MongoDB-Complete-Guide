@@ -1,0 +1,37 @@
+/* Homebrew Website */
+
+https://brew.sh 
+
+/* macOS Terminal Script to install Homebrew Package Manager */
+
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+
+/* macOS Terminal Coammands - Steps to install MongoDB on macOS */
+
+/* Adding a Custom Tap */
+
+brew tap mongodb/brew
+
+/* Installing MongoDB Community Edition on macOS */
+
+brew install mongodb-community
+
+OR
+
+brew install mongodb-community@<latest-version>
+
+/* Staring MongoDB on macOS */
+
+brew services start mongodb-community
+
+/* Connecting to MongoDB on macOS from Terminal */
+
+brew services start mongodb-community
+
+/* Getting the List of MongoDb Databases using MongoDB Shell */
+
+show databases
+
+/* Command to Exit from MongoDB Shell */
+
+exit

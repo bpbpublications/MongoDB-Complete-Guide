@@ -1,0 +1,335 @@
+/* MongoDB Default _id Index */
+
+Part name	Size(bytes)
+Timestamp	4
+Machine Id	3
+Process Id	2
+Counter	    3
+
+/* The _id Properties */
+
+/* Code 1 */
+
+var BPBBooksBestSellingEditionsWithIndex = [{
+    'Title': 'Cloud Computing',
+    'Year': '2019',
+    'ISBN': '9789388511407',
+    'Pages': 330,
+    'Weight': '570gm',
+    'Dimension': '23x19x1.5cm',
+    'Tags': ['Cloud Computing', 'Cloud Computing Concepts', 'Non Programming'],
+    'InStock': [{
+            'Type': 'Paperback',
+            'Quantity': 3000
+        },
+        {
+            'Type': 'Hardcover',
+            'Quantity': 1500
+        }
+    ],
+    'SpecialOfferDiscount': '100'
+}, {
+    'Title': 'Introduction to Digital Marketing 101 : Easy to Learn and Implement Hands-on Guide for Digital Marketing',
+    'Year': '2019',
+    'ISBN': '9789389328189',
+    'Pages': 464,
+    'Tags': ['Digital Marketing', 'Digital Marketing Tips', 'Non Programming'],
+    'InStock': [{
+            'Type': 'Paperback',
+            'Quantity': 4000
+        },
+        {
+            'Type': 'Hardcover',
+            'Quantity': 2300
+        }
+    ]
+}, {
+    'Title': 'IOT and Smart Cities: Your Smart City Planning Guide',
+    'Year': '2019',
+    'ISBN': '9789388511322',
+    'Pages': 242,
+    'Weight': '357gm',
+    'Dimension': '22.5x15x1.5gm',
+    'Tags': ['Internet of Things', 'IoT', 'Smart City', 'Planning Guide', 'Non Programming'],
+    'InStock': [{
+            'Type': 'Paperback',
+            'Quantity': 2000
+        },
+        {
+            'Type': 'Hardcover',
+            'Quantity': 1000
+        }
+    ] ,
+    'SpecialOfferDiscount': '200'
+}, {
+    'Title': 'Machine Learning with Python',
+    'Year': '2018',
+    'ISBN': '9789386551931',
+    'Pages': 267,
+    'Tags': ['Python', 'Machine Learning', 'Python Programming', 'Programming'],
+    'InStock': [{
+            'Type': 'Paperback',
+            'Quantity': 4500
+        },
+        {
+            'Type': 'Hardcover',
+            'Quantity': 1300
+        }
+    ]
+}, {
+    'Title': 'Artificial Intelligence Ethics and International Law: An Introduction',
+    'Year': '2019',
+    'ISBN': ' 9789388511629',
+    'Pages': 188,
+    'Weight': '268gm',
+    'Tags': ['Artificial Intelligence', 'International Law', 'AI', 'Artificial Intelligence Ethics', 'Non Programming'],
+    'InStock': [{
+            'Type': 'Paperback',
+            'Quantity': 5200
+        },
+        {
+            'Type': 'Hardcover',
+            'Quantity': 3300
+        }
+    ]
+}, {
+    'Title': 'A Practical Approach for Machine Learning and Deep Learning Algorithms',
+    'Year': '2019',
+    'ISBN': '9789388511131',
+    'Pages': 280,
+    'Weight': '424gm',
+    'Tags': ['Machine Learning', 'Deep Learning', 'Algorithms', 'Programming'],
+    'InStock': [{
+            'Type': 'Paperback',
+            'Quantity': 2800
+        },
+        {
+            'Type': 'Hardcover',
+            'Quantity': 1250
+        }
+    ] ,
+    'SpecialOfferDiscount': '150'
+}, {
+    '_id': '20021111',
+    'Title': 'Introduction to Database Management',
+    'Year': '2002',
+    'ISBN': ' 9788176566384',
+    'Pages': 342,
+    'Tags': ['Database Management', 'DBMS', 'Programming'],
+    'InStock': [{
+            'Type': 'Paperback',
+            'Quantity': 4000
+        },
+        {
+            'Type': 'Hardcover',
+            'Quantity': 3450
+        }
+    ]
+}];
+
+/* Code 2 */
+
+db.BPBOnlineBooksCollectionWithIndex.insert(BPBBooksBestSellingEditionsWithIndex);
+
+/* Creating an Index */
+
+/* MongoDB db.collection.createIndex() Method */
+
+/* Method Definition */
+
+db.collection.createIndex( <key and index type>, <options> )
+
+db.collection.createIndex({ key: value })
+
+/* Example – Creating an Index in a MongoDB Collection */
+
+/* Code 1 */
+
+db.BPBOnlineBooksCollectionWithIndex.createIndex({Title : 1});
+
+/* Index Types in MongoDB */
+
+/* Single Field Index */
+
+/* Example – Creating a Single Field Index in a MongoDB Collection */
+
+/* Code 1 */
+
+db.BPBOnlineBooksCollectionWithIndex.createIndex({Year : 1});
+
+/* Compound Index */
+
+/* Example – Creating a Compound Index in a MongoDB Collection */
+
+/* Code 1 */
+
+db.BPBOnlineBooksCollectionWithIndex.createIndex({Title : 1, Year : -1});
+
+/* Multi Key Index */
+
+/* Example – Creating a Multi Key Index in a MongoDB Collection */
+
+/* Code 1 */
+
+db.BPBOnlineBooksCollectionWithIndex.createIndex({"InStock.Type" : 1, "InStock.Quantity" : 1});
+
+/* Text Index */
+
+Text Indexes prevents some language specific stop words. The following are the example of some stop words in English.
+
+•	a
+•	an
+•	the
+•	or
+•	and 
+
+/* Example – Creating a Text Index in a MongoDB Collection */
+
+/* Code 1 */
+
+db.BPBOnlineBooksCollectionWithIndex.createIndex({Title: "text"});
+
+/* Special Types of Index */
+
+Geospatial Index
+Hashed Index
+
+
+/* Index Properties */
+
+/* Unique Index */
+
+/* Example – Creating a Unique Index in a MongoDB Collection */
+
+/* Code 1 */
+
+db.BPBOnlineBooksCollectionWithIndex.createIndex(
+{ISBN: 1},
+{unique: true}
+);
+
+/* Partial Index */
+
+/* Example – Creating a Partial Index in a MongoDB Collection */
+
+/* Code 1 */
+
+db.BPBOnlineBooksCollectionWithIndex.createIndex(
+{Title: -1},
+{partialFilterExpression: {Year: "2019"}}
+);
+
+/* Sparse Index */
+
+/* Example – Creating a Sparse Index in a MongoDB Collection */
+
+/* Code 1 */
+
+db.BPBOnlineBooksCollectionWithIndex.createIndex(
+{ISBN: 1},
+{sparse: true}
+);
+
+/* TTL Index */
+
+/* Example – Creating a TTL Index in a MongoDB Collection */
+
+/* Code 1 */
+
+db.BPBOnlineBooksCollectionWithIndex.createIndex(
+{SpecialOfferDiscount: 1},
+{expireAfterSeconds: 604800}
+);
+
+/* Using an Index */
+
+/* Example – Creating and Using an Index in a MongoDB Collection */
+
+/* Code 1 */
+
+db.BPBOnlineBooksCollectionWithIndex.createIndex({Title : 1, Year : 1});
+
+
+/* Code 2 */
+
+db.BPBOnlineBooksCollectionWithIndex.find().sort({Title : 1, Year : 1}).pretty();
+
+/* Indexes and Collation */
+
+collation: {
+   locale: <string>,
+   caseLevel: <boolean>,
+   caseFirst: <string>,
+   strength: <int>,
+   numericOrdering: <boolean>,
+   alternate: <string>,
+   maxVariable: <string>,
+   backwards: <boolean>
+}
+
+/* Example – Creating an Index with Collation in a MongoDB Collection */
+
+/* Code 1 */
+
+db.BPBOnlineBooksCollectionWithIndex.createIndex({Title : 1, Tags: 1}, { collation: { locale: "en_US" } });
+
+/* View Index Information */
+
+/* MongoDB db.collection.getIndexes() Method */
+
+/* Example – Viewing all the Indexes in a MongoDB Collection */
+
+/* Code 1 */
+
+db.BPBOnlineBooksCollectionWithIndex.getIndexes();
+
+/* Deleting an Index */
+
+•	db.collection.dropIndex()
+•	db.collection.dropIndexes()
+
+/* MongoDB db.collection.dropIndex() Method */
+
+/* Method Definition */
+
+db.collection.dropIndex(index)
+
+/* Example 1 – Deleting an Index in a MongoDB Collection */
+
+/* Code 1 */
+
+db.BPBOnlineBooksCollectionWithIndex.dropIndex({Title:1});
+
+/* MongoDB db.collection.dropIndexes() Method */
+
+/* Method Definition */
+
+db.collection.dropIndex(indexes)
+
+/* Example 2 – Deleting Multiple Index in a MongoDB Collection */
+
+/* Code 1 */
+
+db.BPBOnlineBooksCollectionWithIndex.dropIndexes({Title:1, Year:1});
+
+/* Example 3 – Deleting Multiple Index in a MongoDB Collection using Array Type Values as Parameter */
+
+/* Code 1 */
+
+db.BPBOnlineBooksCollectionWithIndex.dropIndexes(["Title_1_Tags_1", "ISBN_1", "SpecialOfferDiscount_1"]);
+
+/* Example 4 – Deleting All Indexes in a MongoDB Collection */
+
+/* Code 1 */
+
+db.BPBOnlineBooksCollectionWithIndex.dropIndexes();
+
+
+/* Some Restrictions in MongoDB Index */
+
+•	In case you don’t require to read the collections very frequently try avoiding Indexing
+•	As MongoDB Index uses Memory Space (RAM), It is recommended that Indexing doesn’t exceed the Memory Limits
+•	If Index exceed the Memory Limits then MongoDB can remove some of the Indexes and which can lead to Performance Issues
+•	Index name should be less than equal to 164 Characters
+•	In MongoDB Collection cannot have Index more than 64
+•	A Compound Index cannot have more than 31 Fields

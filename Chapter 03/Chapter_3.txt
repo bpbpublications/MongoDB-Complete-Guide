@@ -1,0 +1,48 @@
+/* Command to Install MongoDB Clients on Linux (Ubuntu) */
+
+sudo apt install mongodb-clients
+
+/* Start MongoDB on Linux (Ubuntu) */
+
+sudo systemctl start mongodb
+
+/* Steps for Installing MongoDB on Linux Based Systems (Ubuntu) using Shell Commands */
+
+wget -qO - https://www.mongodb.org/static/pgp/server-4.3.asc | sudo apt-key add -
+
+/* Installing gnupg */
+
+sudo apt-get install gnupg
+
+/* Creating a List  File */
+
+echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.3.list
+
+/* atp get update */
+
+sudo apt-get update
+
+/* Install MongoDB Package from Shell */
+
+sudo apt-get install -y mongodb-org
+
+/* Starting MongoDB from Shell */
+
+sudo systemctl start mongod
+
+/* Checking MongoDB Service Status from Shell */
+
+sudo systemctl status mongod
+
+/* Command for Connecting to MongoDB Shell */
+
+mongo
+
+/* MongoDB Shell Command to display the Databases */
+
+show databases
+
+/* MongoDB Shell Command to exit from MongoDB Shell */
+
+exit
+

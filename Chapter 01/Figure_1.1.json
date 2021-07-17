@@ -1,0 +1,11 @@
+{
+"Students":[
+   {"firstName":"Siya", "lastName":"Sharma", "Location":"India"},
+   {"firstName":"Ron", "lastName":"Smith", "Location":"USA"},
+   {"firstName":"Bash", "lastName":"Tao","Location":"Philippines"}
+],
+"Teachers":[
+   {"firstName":"Dheeraj", "lastName":"Sareen", "Location":"India"},
+   {"firstName":"David", "lastName":"Baker", "Location":"Canada"}
+]
+}

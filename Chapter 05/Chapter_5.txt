@@ -1,0 +1,104 @@
+/* A Collection of Documents in MongoDB */
+
+[{
+"student_id":1,
+"student_name":"Siya Sharma",
+"student_class":"4A",
+"student_hobbies":["Singing", "Painting", "Dance"]
+},
+{
+"student_id":2,
+"student_name":" Harry Dsouza",
+"student_class":"7A",
+"student_hobbies":["Cricket", "Football"],
+"student_bus_route":"E9"
+},
+"student_id":4,
+"student_name":"Md. Hussain",
+"student_class":"10B",
+"student_hobbies":["Poetry"]
+}]
+
+/* Documents are stored in BSON (Binary JSON) format in MongoDB */
+
+{
+   key1: value1,
+   key2: value2,
+   key3: value3,
+   key4: value4,
+   ...
+   keyN: valueN
+}
+
+OR
+
+{
+   field1: value1,
+   field2: value2,
+   field3: value3,
+   field4: value4,
+   ...
+   fieldN: valueN
+}
+
+/* With Real Data */
+
+[
+  {
+    "employee_id": "001",
+    "fname": "Manish",
+    "lname": "Sharma",
+    "department": "IT"
+  },
+  {
+    "employee_id": "002",
+    "fname": "Pooja",
+    "lname": "Kaushik",
+    "department": "HR"
+  },
+  {
+    "employee_id": "003",
+    "fname": "Shahid",
+    "lname": "Reza",
+    "department": "Design"
+  },
+  {
+    "employee_id": "004",
+    "fname": "Sam",
+    "lname": "Methew",
+    "department": "Administration"
+  }
+]
+
+
+/* MongoDB Basic Shell Commands */
+
+/* General Help Command */
+
+help
+
+/* DB related Help Command */
+
+db.help()
+
+
+/* Display the list of Databases */
+
+show databases
+
+/* Use a particular Database */
+
+use <db>
+
+OR
+
+use BPBOnlineDB
+
+/* Display the Collections under the particular Database */
+
+show collections
+
+/* Collection related Help Commands */
+
+db.<collection-name>.help()
+

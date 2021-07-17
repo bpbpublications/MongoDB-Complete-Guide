@@ -1,0 +1,367 @@
+/* MongoDB BSON Data Types */
+
+•	Integer
+•	Double
+•	String
+•	Object
+•	Array
+•	Binary data
+•	Object Id
+•	Boolean
+•	Date
+•	Null
+•	Regular Expression
+•	JavaScript
+•	JavaScript with scope
+•	Timestamp
+•	Min key
+•	Max key
+•	Decimal128
+
+
+/* Integer Data Types */
+
+/* Code 1 */
+
+db.BPBOnlineBooksDataTypesCollection.insert({
+    "Data Type Alias": "int",
+    "Data Type Number": "16",
+    "Data Type Value": 7777
+});
+
+
+/* Code 2 */
+
+
+db.BPBOnlineBooksDataTypesCollection.find({
+    "Data Type Alias": "int"
+}).pretty();
+
+
+/* String Data Types */
+
+/* Code 1 */
+
+db.BPBOnlineBooksDataTypesCollection.insert({
+    "Data Type Alias": "string",
+    "Data Type Number": "2",
+    "Data Type Value": "BPB Publications – The Largest Online Resource for IT Books"
+});
+
+
+/* Code 2 */
+
+
+db.BPBOnlineBooksDataTypesCollection.find({
+    "Data Type Alias": "string"
+}).pretty();
+
+
+/* Double Data Types */
+
+/* Code 1 */
+
+db.BPBOnlineBooksDataTypesCollection.insert({
+    "Data Type Alias": "double",
+    "Data Type Number": "1",
+    "Data Type Value": 777.27
+});
+
+/* Code 2 */
+
+db.BPBOnlineBooksDataTypesCollection.find({
+    "Data Type Alias": "double"
+}).pretty();
+
+/* Array Data Types */
+
+/* Code 1 */
+
+var BPBBookStoresinIndia = ['New Delhi', 'Mumbai', 'Kolkata', 'Chennai'];
+var BPBBookStoresinUSA = ['New York', 'Atlanta', 'Arizona', 'New Jersey'];
+
+/* Code 2 */
+
+db.BPBOnlineBooksDataTypesCollection.insert({
+    "Data Type Alias": "array",
+    "Data Type Number": "4",
+    "Data Type Value 1": BPBBookStoresinIndia,
+    "Data Type Value 2": BPBBookStoresinUSA
+});
+
+/* Code 3 */
+
+db.BPBOnlineBooksDataTypesCollection.find({
+    "Data Type Alias": "array"
+}).pretty();
+
+/* Object Data Types */
+
+/* Code 1 */
+
+var BPBBooksLatestEditions = [{
+    'Title': 'Instant Approach to Software Testing: Principles, Applications, Techniques, and Practices',
+    'Year': '2019',
+    'ISBN': '9789388511162',
+    'Pages': 368,
+    'Weight': '677gm',
+    'Dimension': '24x18x2cm'
+}, {
+    'Title': 'IOT and Smart Cities: Your Smart City Planning Guide',
+    'Year': '2019',
+    'ISBN': '9789388511322',
+    'Pages': 242,
+    'Weight': '357gm',
+    'Dimension': '22.5x15x1.5gm'
+}];
+
+/* Binary Data Types */
+
+/* Code 1 */
+
+var BPBBooksBinaryData = BinData(1, "SGVsbG8gV29ybGQgRnJvbSBCUEIgUHVibGljYXRpb25z"); 
+
+/* Code 2 */
+
+db.BPBOnlineBooksDataTypesCollection.insert({
+    "Data Type Alias": "binData",
+    "Data Type Number": "5",
+    "Data Type Value": BPBBooksBinaryData
+});
+
+/* Code 3 */
+
+db.BPBOnlineBooksDataTypesCollection.find({
+    "Data Type Alias": "binData"
+}).pretty();
+
+/* ObjectId Data Types */
+
+/* Code 1 */
+
+var BPBBooksObjectId = ObjectId(); 
+
+/* Code 2 */
+
+db.BPBOnlineBooksDataTypesCollection.insert({
+    "Data Type Alias": "objectid",
+    "Data Type Number": "7",
+    "Data Type Value": BPBBooksObjectId
+});
+
+
+/* Code 3 */
+
+db.BPBOnlineBooksDataTypesCollection.find({
+    "Data Type Alias": "objectid"
+
+}).pretty();
+
+/* Date Data Types */
+
+/* Code 1 */
+
+var BPBBooksDate1 = Date(); 
+var BPBBooksDate2 = new Date(); 
+
+/* Code 2 */
+
+db.BPBOnlineBooksDataTypesCollection.insert({
+    "Data Type Alias": "date",
+    "Data Type Number": "9",
+    "Data Type Value 1": BPBBooksDate1,
+    "Date Type Value 2": BPBBooksDate2
+});
+
+/* Code 3 */
+
+db.BPBOnlineBooksDataTypesCollection.find({
+    "Data Type Alias": "date"
+}).pretty();
+
+/* Null Data Types */
+
+/* Code 1 */
+
+var BPBBooksNull = null; 
+
+/* Code 2 */
+
+db.BPBOnlineBooksDataTypesCollection.insert({
+    "Data Type Alias": "null",
+    "Data Type Number": "10",
+    "Data Type Value": BPBBooksNull
+});
+
+/* Code 3 */
+
+db.BPBOnlineBooksDataTypesCollection.find({
+    "Data Type Alias": "null"
+}).pretty();
+
+/* Regular Expression Data Types */
+
+/* Code 1 */
+
+var BPBBooksRegEx = RegExp("%BPB");     
+
+/* Code 2 */
+
+db.BPBOnlineBooksDataTypesCollection.insert({
+    "Data Type Alias": "regex",
+    "Data Type Number": "11",
+    "Data Type Value": BPBBooksRegEx
+});
+
+/* Code 3 */
+
+db.BPBOnlineBooksDataTypesCollection.find({
+    "Data Type Alias": "regex"
+}).pretty();
+
+
+/* JavaScript Data Types (Without Scope) */
+
+/* Code 1 */
+
+var BPBBooksFunction = "function(){var bpb; bpb=100;}";
+var BPBBooksFunctionScope =  {};
+
+/* Code 2 */
+
+db.BPBOnlineBooksDataTypesCollection.insert({
+    "Data Type Alias": "javascript",
+    "Data Type Number": "13",
+    "Data Type Value Function": BPBBooksFunction,
+    "Data Type Value Function Scope": BPBBooksFunctionScope
+});
+
+/* Code 3 */
+
+db.BPBOnlineBooksDataTypesCollection.find({
+    "Data Type Alias": "javascript"
+}).pretty();
+
+
+/* Javascript Data Types (With Scope) */
+
+/* Code 1 */
+
+var BPBBooksFunction = "function(){var bpb; bpb=2000;}";
+var BPBBooksFunctionScope = ["object"]; 
+
+/* Code 2 */
+
+db.BPBOnlineBooksDataTypesCollection.insert({
+    "Data Type Alias": "javascriptWithScope",
+    "Data Type Number": "15",
+    "Data Type Value Function": BPBBooksFunction,
+    "Data Type Value Function Scope": BPBBooksFunctionScope
+});
+
+/* Code 3 */
+
+db.BPBOnlineBooksDataTypesCollection.find({
+    "Data Type Alias": "javascriptWithScope"
+}).pretty();
+
+/* Timestamp Data Types */
+
+/* Code 1 */
+
+var BPBBooksTimestamp = new Timestamp();
+
+/* Code 2 */
+
+db.BPBOnlineBooksDataTypesCollection.insert({
+    "Data Type Alias": "timestamp",
+    "Data Type Number": "17",
+    "Data Type Value": BPBBooksTimestamp
+});
+
+/* Code 3 */
+
+db.BPBOnlineBooksDataTypesCollection.find({
+    "Data Type Alias": "timestamp"
+}).pretty();
+
+
+/* Boolean Data Types */
+
+/* Code 1 */
+
+var BPBBooksBoolean1 = true;
+var BPBBooksBoolean2 = false;
+
+/* Code 2 */
+
+db.BPBOnlineBooksDataTypesCollection.insert({
+    "Data Type Alias": "bool",
+    "Data Type Number": "8",
+    "Data Type Value 1": BPBBooksBoolean1,
+    "Data Type Value 2": BPBBooksBoolean2
+});
+
+/* Code 3 */
+
+db.BPBOnlineBooksDataTypesCollection.find({
+    "Data Type Alias": "bool"
+}).pretty();
+
+
+/* Comparison and Sort Order */
+
+1.	MinKey
+2.	Null
+3.	Numbers (ints, longs, doubles)
+4.	Symbol, String
+5.	Object
+6.	Array
+7.	BinData
+8.	ObjectId
+9.	Boolean
+10.	Date
+11.	Timestamp
+12.	Regular Expression
+13.	MaxKey
+
+/* Code 1 */
+
+var BPBBooksVar1 = 100000;
+var BPBBooksVar2 = "BPB Publications";
+var BPBBooksVar3 = 77.07;
+var BPBBooksVar4 = true;
+var BPBBooksVar5 = null;
+var BPBBooksVar6 = MinKey;
+var BPBBooksVar7 = MaxKey;
+
+/* Code 2 */
+
+db.BPBOnlineBooksDataTypesCollectionV2.insert([{
+    "Data Type Alias": "int",
+    "Data Type Value": BPBBooksVar1
+}, {
+    "Data Type Alias": "string",
+    "Data Type Value": BPBBooksVar2
+}, {
+    "Data Type Alias": "double",
+    "Data Type Value": BPBBooksVar3
+}, {
+    "Data Type Alias": "bool",
+    "Data Type Value": BPBBooksVar4
+}, {
+    "Data Type Alias": "null",
+    "Data Type Value": BPBBooksVar5
+}, {
+    "Data Type Alias": "minKey",
+    "Data Type Value": BPBBooksVar6
+}, {
+    "Data Type Alias": "maxKey",
+    "Data Type Value": BPBBooksVar7
+}]);
+
+/* Code 3 */
+
+db.BPBOnlineBooksDataTypesCollectionV2.find().sort({
+    "Data Type Value": 1
+});

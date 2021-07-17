@@ -1,0 +1,460 @@
+/* MongoDB Create Operations */
+
+•	db.collection.insert()
+•	db.collection.insertOne() 
+•	db.collection.insertMany()
+
+/* MongoDB db.collection.insert() Method */
+
+
+/* Method Definition */
+
+db.collection.insert(
+<single document or multiple documents in an array>,
+   {
+     ordered: <Boolean (true or false)>
+   }
+)
+
+/* Code 1 */
+
+var BPBBooksBestSellingEditions = {
+    'Title': 'Cloud Computing',
+    'Year': '2019',
+    'ISBN': '9789388511407',
+    'Pages': 330,
+    'Weight': '570gm',
+    'Dimension': '23x19x1.5cm'
+};
+
+/* Code 2 */
+
+db.BPBOnlineBooksCollection.insert(BPBBooksBestSellingEditions);
+
+/* Example 2 – Creating a Multiple Documents in MongoDB Collection */
+
+/* Code 1 */
+
+var BPBBooksBestSellingEditions = [{
+    'Title': 'Introduction to Digital Marketing 101 : Easy to Learn and Implement Hands-on Guide for Digital Marketing',
+    'Year': '2019',
+    'ISBN': '9789389328189',
+    'Pages': 464
+}, {
+    'Title': 'IOT and Smart Cities: Your Smart City Planning Guide',
+    'Year': '2019',
+    'ISBN': '9789388511322',
+    'Pages': 242,
+    'Weight': '357gm',
+    'Dimension': '22.5x15x1.5gm'
+}];
+
+/* Code 2 */
+
+db.BPBOnlineBooksCollection.insert(BPBBooksBestSellingEditions);
+
+/* MongoDB db.collection.insertOne() Method */
+
+/* Method Definition */
+
+db.collection.insertOne(
+<single document>
+)
+
+/* Example – Creating a Single Document in MongoDB Collection using insertOne() Method */
+
+/* Code 1 */
+
+var BPBBooksBestSellingEditions = {
+    'Title': 'Machine Learning with Python',
+    'Year': '2018',
+    'ISBN': '9789386551931',
+    'Pages': 267
+};
+
+/* Code 2 */
+
+db.BPBOnlineBooksCollection.insertOne(BPBBooksBestSellingEditions);
+
+/* MongoDB db.collection.insertMany() Method */
+
+/* Method Definition */
+
+db.collection.insertMany(
+   [ <document 1> , <document 2>, ... <document n>],
+   {
+      ordered: <boolean>
+   }
+)
+
+/* Example – Creating Multiple Documents in MongoDB Collection using insertMany() Method */
+
+/* Code 1 */
+
+var BPBBooksBestSellingEditions = [{
+    'Title': 'Artificial Intelligence Ethics and International Law: An Introduction',
+    'Year': '2019',
+    'ISBN': '9789388511629',
+    'Pages': 188,
+    'Weight': '268gm'
+}, {
+    'Title': 'A Practical Approach for Machine Learning and Deep Learning Algorithms',
+    'Year': '2019',
+    'ISBN': '9789388511131',
+    'Pages': 280,
+    'Weight': '424gm'
+}];
+
+/* Code 2 */
+
+db.BPBOnlineBooksCollection.insertMany(BPBBooksBestSellingEditions);
+
+/* Example - Creating a new document by specifying _id key */
+
+/* Code 1 */
+
+var BPBBooksBestSellingEditions = {
+    '_id': '20021111',
+    'Title': 'Introduction to Database Management',
+    'Year': '2002',
+    'ISBN': ' 9788176566384',
+    'Pages': 342
+};
+
+/* Code 2 */
+
+db.BPBOnlineBooksCollection.insert(BPBBooksBestSellingEditions);
+
+/* MongoDB Read Operations */
+
+/* MongoDB db.collection.find() */
+
+db.collection.find(query, projection)
+
+/* Example 1 – Reading Documents in MongoDB Collection without Query */
+
+/* Code 1 */
+
+db.BPBOnlineBooksCollection.find();
+
+/* Example 2 – Reading Documents in MongoDB Collection with Query */
+
+/* Code 1 */
+
+db.BPBOnlineBooksCollection.find({'Year': '2002'});
+
+/* Example 3 – Reading Documents in MongoDB Collection with Query and Pretty Method */
+
+/* Code 1 */
+
+db.BPBOnlineBooksCollection.find({'Year': '2019'}).pretty();
+
+/* MongoDB Update Operations */
+
+•	db.collection.update()
+•	db.collection.updateOne() 
+•	db.collection.updateMany()
+
+/* MongoDB db.collection.update() Method */
+
+db.collection.update(
+<selection query>,
+<data to update>,
+   {
+     upsert: <boolean>,
+     multi: <boolean>
+   }
+)
+
+/* Example 1 – Updating a Single Document in MongoDB Collection using update() Method */
+
+/* Code 1 */
+
+var BPBBooksSelectionQuery = {
+    'Title': 'Introduction to Database Management'
+};
+
+var BPBBooksDatatoUpdate = {
+    'Title': 'Introduction to Database Management (The Complete Text Book for Computer Science Students)'
+};
+
+/* Code 2 */
+
+db.BPBOnlineBooksCollection.update(BPBBooksSelectionQuery, {
+    $set: BPBBooksDatatoUpdate
+});
+
+/* Example 2 – Updating Multiple Documents in MongoDB Collection using update() Method */
+
+/* Code 1 */
+
+var BPBBooksSelectionQuery = {
+    'Year': '2019'
+};
+
+var BPBBooksDatatoUpdate = {
+    'Publisher': 'BPB Publications'
+};
+
+/* MongoDB db.collection.updateOne() Method */
+
+/* Method Definition */
+
+db.collection.updateOne(
+<filter>,
+<update>,
+   {
+     upsert: <boolean>
+   }
+)
+
+/* Example – Updating a Single Document in MongoDB Collection using updateOne() Method */
+
+/* Code 1 */
+
+var BPBBooksSelectionQuery = {
+    'Title': 'IOT and Smart Cities: Your Smart City Planning Guide'
+};
+
+var BPBBooksDatatoUpdate = {
+    'Title': 'IOT and Smart Cities',
+    'Year': '2020'
+};
+
+/* Code 2 */
+
+db.BPBOnlineBooksCollection.updateOne(BPBBooksSelectionQuery, {
+    $set: BPBBooksDatatoUpdate
+});
+
+/* MongoDB db.collection.updateMany() Method */
+
+/* Method Definition */
+
+db.collection.updateMany(
+<filter>,
+<update>,
+   {
+     upsert: <boolean>
+   }
+)
+
+/* Example – Updating Multiple Documents in MongoDB Collection using updateMany() Method */
+
+/* Code 1 */
+
+var BPBBooksSelectionQuery = {
+    'Year': '2019'
+};
+
+var BPBBooksDatatoUpdate = {
+    'Discount': '10%'
+};
+
+/* Code 2 */
+
+db.BPBOnlineBooksCollection.updateMany(BPBBooksSelectionQuery, {
+    $set: BPBBooksDatatoUpdate
+});
+
+/* MongoDB Delete Operations */
+
+•	db.collection.remove()
+•	db.collection.deleteOne() 
+•	db.collection.deleteMany()
+
+/* MongoDB db.collection.remove() Method */
+
+/* Method Definition */
+
+db.collection.remove(
+<selection query>,
+   {
+     justOne: <boolean>
+   }
+)
+
+/* remove() Method is a depreciated function and it is going to be unavailable in the future versions of MongoDB so it is better to use the deleteOne() and deleteMany() Methods instead of remove() Method. */
+
+/* Method Definition */
+
+db.collection.remove(
+<selection query>,
+   {
+     justOne: <boolean>
+   }
+)
+
+/* Example 1 – Deleting a Single Document in MongoDB Collection using remove() Method */
+
+/* Code 1 */
+
+var BPBBooksSelectionQuery = {
+    'Year': '2002'
+};
+
+/* Code 2 */
+
+db.BPBOnlineBooksCollection.remove(
+BPBBooksSelectionQuery, 
+{
+    justOne: true
+}
+);
+
+/* Example 2 – Deleting Multiple Documents in MongoDB Collection using remove() Method */
+
+/* Code 1 */
+
+var BPBBooksSelectionQuery = {
+    'Year': '2019'
+};
+
+/* Code 2 */
+
+db.BPBOnlineBooksCollection.remove(BPBBooksSelectionQuery);
+
+/* MongoDB db.collection.deleteOne() Method */
+
+/* Method Definition */
+
+db.collection.deleteOne(
+<filter>
+)
+
+/* Example – Deleting a Single Document in MongoDB Collection using deleteOne() Method */
+
+/* Code 1 */
+
+var BPBBooksSelectionQuery = {
+    'Year': '2020'
+};
+
+/* Code 2 */
+
+db.BPBOnlineBooksCollection.deleteOne(BPBBooksSelectionQuery);
+
+/* MongoDB db.collection.deleteMany() Method */
+
+/* Method Definition */
+
+db.collection.deleteMany(
+<filter>
+)
+
+/* Example – Deleting multiple Documents in MongoDB Collection using deleteMany() Method */
+
+/* Code 1 */
+
+var BPBBooksSelectionQuery = {
+    'Year': '2019'
+};
+
+/* Code 2 */
+
+db.BPBOnlineBooksCollection.deleteMany(BPBBooksSelectionQuery);
+
+/* MongoDB Bulk Write Operations */
+
+/* MongoDB db.collection.bulkWrite() Method */
+
+/* Method Definition */
+
+db.collection.bulkWrite(
+   [ <operation 1>, <operation 2>, ... <operation N>],
+   {
+      ordered : <boolean>
+   }
+)
+
+/* bulkWrite() supports the following write operations */
+
+•	insertOne
+•	updateOne
+•	updateMany
+•	replaceOne
+•	deleteOne
+•	deleteMany
+
+
+db.collection.bulkWrite( [
+   { insertOne : { "document" : <document> } }
+] )
+
+db.collection.bulkWrite( [
+   { updateOne :
+      {
+         "filter": <document>,
+         "update": <document or pipeline>,
+         "upsert": <boolean>
+      }
+   }
+] ) 
+
+db.collection.bulkWrite( [
+   { updateMany :
+      {
+         "filter": <document>,
+         "update": <document or pipeline>,
+         "upsert": <boolean>
+      }
+   }
+] )
+
+db.collection.bulkWrite([
+   { replaceOne :
+      {
+         "filter" : <document>,
+         "replacement" : <document>,
+         "upsert" : <boolean>
+      }
+   }
+] )
+
+db.collection.bulkWrite([
+   { deleteOne : {
+      "filter" : <document>
+   } }
+] )
+
+db.collection.bulkWrite([
+   { deleteMany : {
+      "filter" : <document>
+   } }
+] )
+
+/* Example – Bulk Write in MongoDB Collection using bulkWrite() Method */
+
+db.collection.bulkWrite(
+   [
+      { insertOne : <document> },
+      { updateOne : <document> },
+      { updateMany : <document> },
+      { replaceOne : <document> },
+      { deleteOne : <document> },
+      { deleteMany : <document> }
+   ]
+)
+
+/* Let us assume we have 3 Documents already exists in our Collection "BPBOnlineBooksCollection" */
+
+{ "_id" : 1, "Title" : "Introduction to Python", "Year" : "2017", "Price" : 500 },
+{ "_id" : 2, "Title" : "Mastering MySQL", "Year" : "2010", "Price" : 600 },
+{ "_id" : 3, "Title" : "Learn JavaScript in 24 Hrs", "Year" : "2015", "Price" : 400 }
+
+
+/* Code 1 */
+
+   db.BPBOnlineBooksCollection.bulkWrite([
+      { insertOne: { "document": { "_id": 4, "Title": "Learn C++", "Year": "2000", "Price": 450 } } },
+      { insertOne: { "document": { "_id": 5, "Title": "Mastering Java", "Year": "2005", "Price": 700 } } },
+      { updateOne : {
+         "filter" : { "Title" : "Learn C++" },
+         "update" : { $set : { "Publisher" : "BPB Publication" } }
+      } },
+      { deleteOne : { "filter" : { "Year" : "2010"} } },
+      { replaceOne : {
+         "filter" : { "Title" : "Introduction to Python" },
+         "replacement" : { "Title" : "Mastering Python", "Year" : "2020", "Price": 800 }
+      } }
+   ]);

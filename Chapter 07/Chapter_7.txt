@@ -1,0 +1,134 @@
+/* Create Database Command */
+
+/* Step 1 */
+
+use <database-name>
+
+OR
+
+use BPBOnlineBooksDB
+
+
+/* Step 2 */
+
+db.<collection-name>.insert()
+
+OR
+
+db.BPBOnlineBooksDBCollection.insert({"book-title":"Mastering MongoDB"})
+
+
+/* Create Collection */
+
+/* Step 1 - Switching to the particular Database */
+
+use <database-name>
+
+/* Step 2 - Creating a Collection under the Database */
+
+db.createCollection("<collection-name>")
+
+OR
+
+db.createCollection("BPBOnlineBooksDBCollection-V2")
+
+
+/* Inserting a Document in a Collection */
+
+db.<collection-name>.insert()
+
+OR
+
+db.BPBOnlineBooksDBCollection-V3.insert({"book-title":"Mastering MongoDB with JavaScript"})
+
+/* Dropping or Deleting a Database */
+
+/* Step 1 - Switching to the Database */
+
+use <database-name>
+
+/* Step 2 - Dropping a Database */
+
+db.dropDatabase()
+
+/* Dropping or Deleting a Collection */
+
+/* Step 1 - Switching to the Database */
+
+use <database-name>
+
+/* Step 2 - Dropping a Collection */
+
+db.<collection-name>.drop()
+
+OR
+
+db.BPBOnlineBooksDBV3Collection.drop()
+
+
+/* Read Document Command */
+
+/* Step 1 - Switching to the Database */
+
+use <database-name>
+
+/* Step 2 - Listing Documents in a Collection */
+
+db.<collection-name>.find()
+
+OR
+
+db.BPBOnlineBooksDBV4Collection.find()
+
+OR
+
+db.BPBOnlineBooksDBV4Collection.find().pretty()
+
+/* Delete Document Command */
+
+/* Step 1 - Switching to the Database */
+
+use <database-name>
+
+
+/* Step 2 - Deleting or Removing Document */
+
+db.<collection-name>.remove()
+
+OR
+
+db.BPBOnlineBooksDBV4Collection.remove({"_id" : ObjectId("5e8e94513c9f251e6d749109")})
+
+/* Role Based Authentication in MongoDB */
+
+/* Step 1 - Switching to the Database */
+
+use <database-name>
+
+OR
+
+use BPBOnlineBooksDBWithAuth
+
+/* Step 2 - Creating an MongoDB User with a Role */
+
+db.createUser(
+  {
+    user: "manusharma",
+    pwd: "admin1234",
+    roles:
+    [
+      {
+        role: "userAdmin",
+        db: "BPBOnlineBooksDBWithAuth"
+      }
+    ]
+  }
+)
+
+/* Step 3 - Restarting the MongoDB Service with Auth Flag */
+
+mongod --auth --port 27017
+
+/* Step 4 - Authenticate with Username and Password */
+
+mongo -u "manusharma" -p "admin1234" --authenticationDatabase  "BPBOnlineBooksDBWithAuth"
